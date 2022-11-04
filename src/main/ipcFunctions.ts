@@ -2,7 +2,6 @@ import {BrowserWindow, dialog} from 'electron';
 import path from 'path';
 import fs  from 'fs'
 import os from 'os'
-import { contextIsolated } from 'process';
 
 export default class IpcFunctions {
         mainWindow: BrowserWindow;
@@ -15,9 +14,15 @@ export default class IpcFunctions {
                 this.mainWindow.webContents.send("exportPDFStarted");
         }
 
+        startExportPDFPath() {
+                this.mainWindow.webContents.send("exportPDFPathStarted");
+        }
+
         //export pdf
-        exportPDF() {
-                const pdfPath = path.join(os.homedir(), 'Downloads', 'code_files.pdf')
+        exportPDF(pathToPdf : string) {
+                let pdfPath = pathToPdf;
+                if(pathToPdf == "")
+                        pdfPath = path.join(os.homedir(), 'Downloads', 'code_files.pdf')
                 this.mainWindow?.webContents.printToPDF({marginsType: 1, printBackground: true}).then(data => {
                 fs.writeFile(pdfPath, data, (error) => {
                 if (error) throw error
@@ -29,13 +34,15 @@ export default class IpcFunctions {
                 this.mainWindow.webContents.send('exportPDFFinished')
         }
       
-      //openfile
-      async openFile() {
-        const { canceled, filePaths } = await dialog.showOpenDialog(this.mainWindow!, {});
+      //saveFile
+      async saveFile() {
+        const dialogOptions = {filters: [{ name: "PDF", extensions: ["pdf"] }]};
+        const { canceled, filePath } = await dialog.showSaveDialog(this.mainWindow, dialogOptions);
+        console.log(canceled)
         if (canceled) {
-          return
+          return ""
         } else {
-          return filePaths[0]
+          return filePath
         }
       }
 }

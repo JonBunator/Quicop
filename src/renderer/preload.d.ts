@@ -1,11 +1,12 @@
 declare global {
   interface Window {
     electronAPI: {
-      exportPDF(): void;
+      exportPDF(path: string): void;
       onExportPDFFinished(func: (...args: unknown[]) => void): (() => void) | undefined;
       onExportPDFStarted(func: (...args: unknown[]) => void): (() => void) | undefined;
+      onExportPDFPathStarted(func: (...args: unknown[]) => void): (() => void) | undefined;
       exportPDFFinished(): void;
-      openFile(): string;
+      saveFile(): Promise<string>;
     };
   }
 }

@@ -21,14 +21,14 @@ import IpcFunctions from './ipcFunctions'
 //-------------------------------------------------------------------------------------------------------------
 let functions: IpcFunctions | null = null;
 //export pdf
-function exportPDF() {
-  functions?.exportPDF()
-}
+ipcMain.on('exportPDF', function(event, args) {
+  functions?.exportPDF(args)
+})
 
 //openfile
-async function openFile() {
-  functions?.openFile()
-}
+ipcMain.handle('saveFile', async function() {
+  return functions?.saveFile()
+})
 
 
 //-------------------------------------------------------------------------------------------------------------
@@ -144,8 +144,6 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(() => {
-    ipcMain.on('exportPDF', exportPDF)
-    ipcMain.handle('openFile', openFile)
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the

@@ -206,13 +206,22 @@ export default class MenuBuilder {
             label: '&Open...',
             accelerator: 'Ctrl+O',
           },
+          { type: 'separator' },
           {
-            label: '&Export pdf',
-            accelerator: 'Ctrl+S',
+            label: '&Export PDF',
+            accelerator: 'Ctrl+E',
             click: () => {
               this.functions.startExportPDF();
             },
           },
+          {
+            label: '&Export PDF to...',
+            accelerator: 'Shift+Ctrl+E',
+            click: () => {
+              this.functions.startExportPDFPath();
+            },
+          },
+          { type: 'separator' },
           {
             label: '&Exit',
             accelerator: 'Alt+F4',
