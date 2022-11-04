@@ -16,7 +16,7 @@ export default function RootComponent(props : any) {
     }, []);
       
     useEffect(() => {
-      window.electron.ipcRenderer.on('print-to-pdf', function(event, args) {
+      window.electronAPI.onExportPDFFinished(function() {
         setDefaultView(true)
       })
     }, []);

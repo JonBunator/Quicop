@@ -11,7 +11,6 @@ export default function MarkdownEditor(props : any) {
                 props.onCodeChange(value, viewUpdate)
         }, []);
 
-
         return (
         <div className='editor-panels'>
                 <CodeEditor id="code-editor" code={code} onChange={onCodeChange}/>

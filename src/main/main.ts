@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -17,6 +17,32 @@ import { resolveHtmlPath } from './util';
 import fs  from 'fs'
 import os from 'os'
 
+//-------------------------------------------------------------------------------------------------------------
+//export pdf
+ipcMain.on('exportPDF', function(event) {
+  const pdfPath = path.join(os.homedir(), 'Downloads', 'code_files.pdf')
+  mainWindow?.webContents.printToPDF({marginsType: 1, printBackground: true}).then(data => {
+    fs.writeFile(pdfPath, data, (error) => {
+      if (error) throw error
+      console.log(`Wrote PDF successfully to ${pdfPath}`)
+    })
+  }).catch(error => {
+    console.log(`Failed to write PDF to ${pdfPath}: `, error)
+  })
+  event.sender.send('exportPDFFinished')
+})
+
+//openfile
+ipcMain.handle('openFile', async function() {
+  const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow!, {});
+  if (canceled) {
+    return
+  } else {
+    return filePaths[0]
+  }
+})
+
+//-------------------------------------------------------------------------------------------------------------
 
 class AppUpdater {
   constructor() {
@@ -27,6 +53,7 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -77,21 +104,6 @@ const createWindow = async () => {
         : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
   });
-//save pdf 
-ipcMain.on('print-to-pdf', function(event) {
-    // Use default printing options
-    const pdfPath = path.join(os.homedir(), 'Downloads', 'code_files.pdf')
-    
-    mainWindow?.webContents.printToPDF({marginsType: 1, printBackground: true}).then(data => {
-      fs.writeFile(pdfPath, data, (error) => {
-        if (error) throw error
-        console.log(`Wrote PDF successfully to ${pdfPath}`)
-      })
-    }).catch(error => {
-      console.log(`Failed to write PDF to ${pdfPath}: `, error)
-    })
-    event.sender.send('print-to-pdf', []);
-})
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
