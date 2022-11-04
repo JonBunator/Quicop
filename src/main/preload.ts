@@ -6,5 +6,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
     onExportPDFStarted: (func: (...args: unknown[]) => void) => ipcRenderer.on('exportPDFStarted', func),
     onExportPDFPathStarted: (func: (...args: unknown[]) => void) => ipcRenderer.on('exportPDFPathStarted', func),
     exportPDFFinished: () => ipcRenderer.send('exportPDFFinished'),
-    saveFile: () => ipcRenderer.invoke('saveFile')
+    saveFile: () => ipcRenderer.invoke('saveFile'),
+    loadFile: (path : string) => ipcRenderer.invoke('loadFile', path)
 })

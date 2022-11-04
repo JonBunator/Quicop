@@ -14,20 +14,33 @@ body {
   display: flex;
 }
 
-.cm-theme, .markdown-generated {
+.cm-theme {
   width: 50vw;
 }
 
 .markdown-generated {
   margin: 30px;
   margin-top: 10px;
+  width: 100%;
+
 }
 
-.markdown-generated .hljs {
-  overflow-x: unset;
+.markdown-generated pre code.hljs span {
+  word-wrap: break-word;
+}
+
+.markdown-generated code {
   border-radius: 4px;
   border: 1px solid #ccc;
+  padding: 1em;
+  color: #24292e;
+  background: #fff;
+  display: block;
 }
+.markdown-generated pre code.hljs {
+  overflow-x: unset;
+}
+
 
 code, pre {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;

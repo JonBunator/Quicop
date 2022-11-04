@@ -6,6 +6,6 @@ export default function PdfExportView(props : any) {
                 window.electronAPI.exportPDF(props.path);
         }, []);
 
-        return (<MarkdownVisualization code={props.code}/>
+        return (<MarkdownVisualization code={props.code} codeFiles={props.codeFiles}/>
         )
 }

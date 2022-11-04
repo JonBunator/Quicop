@@ -25,9 +25,20 @@ ipcMain.on('exportPDF', function(event, args) {
   functions?.exportPDF(args)
 })
 
-//openfile
+//open file
 ipcMain.handle('saveFile', async function() {
   return functions?.saveFile()
+})
+
+//load file
+ipcMain.handle('loadFile', function(event, args) {
+  let data = ""; 
+  try {
+    data = fs.readFileSync(args, 'utf-8');
+  } catch(err){
+    return null;
+  }
+  return data;
 })
 
 

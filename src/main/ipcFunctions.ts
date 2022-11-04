@@ -23,7 +23,8 @@ export default class IpcFunctions {
                 let pdfPath = pathToPdf;
                 if(pathToPdf == "")
                         pdfPath = path.join(os.homedir(), 'Downloads', 'code_files.pdf')
-                this.mainWindow?.webContents.printToPDF({marginsType: 1, printBackground: true}).then(data => {
+                        //printBackground: true
+                this.mainWindow?.webContents.printToPDF({pageSize:"A4"}).then(data => {
                 fs.writeFile(pdfPath, data, (error) => {
                 if (error) throw error
                 console.log(`Wrote PDF successfully to ${pdfPath}`)
@@ -34,11 +35,10 @@ export default class IpcFunctions {
                 this.mainWindow.webContents.send('exportPDFFinished')
         }
       
-      //saveFile
+      //save file
       async saveFile() {
         const dialogOptions = {filters: [{ name: "PDF", extensions: ["pdf"] }]};
         const { canceled, filePath } = await dialog.showSaveDialog(this.mainWindow, dialogOptions);
-        console.log(canceled)
         if (canceled) {
           return ""
         } else {

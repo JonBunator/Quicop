@@ -14,6 +14,6 @@ export default function MarkdownEditor(props : any) {
         return (
         <div className='editor-panels'>
                 <CodeEditor id="code-editor" code={code} onChange={onCodeChange}/>
-                <MarkdownVisualization code={code}/>
+                <MarkdownVisualization code={code} codeFiles={props.codeFiles}/>
         </div>)
 }

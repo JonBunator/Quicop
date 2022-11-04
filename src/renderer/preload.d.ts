@@ -7,6 +7,7 @@ declare global {
       onExportPDFPathStarted(func: (...args: unknown[]) => void): (() => void) | undefined;
       exportPDFFinished(): void;
       saveFile(): Promise<string>;
+      loadFile(path : string): Promise<string>;
     };
   }
 }
