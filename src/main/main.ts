@@ -16,31 +16,20 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import fs  from 'fs'
 import os from 'os'
+import IpcFunctions from './ipcFunctions'
 
 //-------------------------------------------------------------------------------------------------------------
+let functions: IpcFunctions | null = null;
 //export pdf
-ipcMain.on('exportPDF', function(event) {
-  const pdfPath = path.join(os.homedir(), 'Downloads', 'code_files.pdf')
-  mainWindow?.webContents.printToPDF({marginsType: 1, printBackground: true}).then(data => {
-    fs.writeFile(pdfPath, data, (error) => {
-      if (error) throw error
-      console.log(`Wrote PDF successfully to ${pdfPath}`)
-    })
-  }).catch(error => {
-    console.log(`Failed to write PDF to ${pdfPath}: `, error)
-  })
-  event.sender.send('exportPDFFinished')
-})
+function exportPDF() {
+  functions?.exportPDF()
+}
 
 //openfile
-ipcMain.handle('openFile', async function() {
-  const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow!, {});
-  if (canceled) {
-    return
-  } else {
-    return filePaths[0]
-  }
-})
+async function openFile() {
+  functions?.openFile()
+}
+
 
 //-------------------------------------------------------------------------------------------------------------
 
@@ -125,6 +114,9 @@ const createWindow = async () => {
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 
+  //add ipc functions
+  functions = new IpcFunctions(mainWindow);
+
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
     shell.openExternal(edata.url);
@@ -133,8 +125,9 @@ const createWindow = async () => {
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
-  new AppUpdater();
+ // new AppUpdater();
 };
+
 
 /**
  * Add event listeners...
@@ -151,6 +144,8 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(() => {
+    ipcMain.on('exportPDF', exportPDF)
+    ipcMain.handle('openFile', openFile)
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the

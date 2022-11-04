@@ -12,10 +12,14 @@ export default function RootComponent(props : any) {
           console.log(value)
       }, []);
       const onTriggerPdfExport = React.useCallback((args : any) => {
-        setDefaultView(false)
     }, []);
       
     useEffect(() => {
+      window.electronAPI.onExportPDFStarted(function() {
+        console.log("received")
+        setDefaultView(false)
+      })
+
       window.electronAPI.onExportPDFFinished(function() {
         setDefaultView(true)
       })

@@ -15,6 +15,5 @@ export default function MarkdownEditor(props : any) {
         <div className='editor-panels'>
                 <CodeEditor id="code-editor" code={code} onChange={onCodeChange}/>
                 <MarkdownVisualization code={code}/>
-                <button onClick={props.onTriggerPdfExport}>Export</button>
         </div>)
 }

@@ -4,7 +4,10 @@ import {
   shell,
   BrowserWindow,
   MenuItemConstructorOptions,
+  ipcRenderer
 } from 'electron';
+
+import IpcFunctions from './ipcFunctions'
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
@@ -13,9 +16,11 @@ interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
 
 export default class MenuBuilder {
   mainWindow: BrowserWindow;
+  functions: IpcFunctions;
 
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
+    this.functions = new IpcFunctions(mainWindow)
   }
 
   buildMenu(): Menu {
@@ -198,8 +203,15 @@ export default class MenuBuilder {
         label: '&File',
         submenu: [
           {
-            label: '&Open',
+            label: '&Open...',
             accelerator: 'Ctrl+O',
+          },
+          {
+            label: '&Export pdf',
+            accelerator: 'Ctrl+S',
+            click: () => {
+              this.functions.startExportPDF();
+            },
           },
           {
             label: '&Exit',

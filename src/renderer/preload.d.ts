@@ -3,6 +3,7 @@ declare global {
     electronAPI: {
       exportPDF(): void;
       onExportPDFFinished(func: (...args: unknown[]) => void): (() => void) | undefined;
+      onExportPDFStarted(func: (...args: unknown[]) => void): (() => void) | undefined;
       exportPDFFinished(): void;
       openFile(): string;
     };
