@@ -24,7 +24,7 @@ export default class IpcFunctions {
                 if(pathToPdf == "")
                         pdfPath = path.join(os.homedir(), 'Downloads', 'code_files.pdf')
                         //printBackground: true
-                this.mainWindow?.webContents.printToPDF({pageSize:"A4"}).then(data => {
+                this.mainWindow?.webContents.printToPDF({pageSize:"A4", footerTemplate:"<div><span style=\"font-size:15rem; margin-left:300px;\" class=\"pageNumber\"></span></div>", headerTemplate:" ",displayHeaderFooter:true}).then(data => {
                 fs.writeFile(pdfPath, data, (error) => {
                 if (error) throw error
                 console.log(`Wrote PDF successfully to ${pdfPath}`)

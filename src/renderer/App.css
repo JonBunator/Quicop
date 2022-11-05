@@ -21,8 +21,7 @@ body {
 .markdown-generated {
   margin: 30px;
   margin-top: 10px;
-  width: 100%;
-
+  width: 650px;
 }
 
 .markdown-generated pre code.hljs span {
