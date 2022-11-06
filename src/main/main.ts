@@ -17,6 +17,8 @@ import { resolveHtmlPath } from './util';
 import fs  from 'fs'
 import os from 'os'
 import IpcFunctions from './ipcFunctions'
+import { isText, isBinary } from 'istextorbinary'
+
 //-------------------------------------------------------------------------------------------------------------
 let functions: IpcFunctions | null = null;
 //export pdf
@@ -42,13 +44,18 @@ ipcMain.handle('openFolder', async function() {
 
 //load file
 ipcMain.handle('loadFile', function(event, args) {
-  let data = ""; 
+  let data;
+  let binaryFileNameError = "Can't display binary file with path \"" + args + "\"!";
   try {
-    data = fs.readFileSync(args, 'utf-8');
+    data = fs.readFileSync(args);
+    //check if binary file
+    if(isBinary(args, data)) {
+      return binaryFileNameError;
+    }
   } catch(err){
     return null;
   }
-  return data;
+  return data.toString('utf8');
 })
 
 //open file
@@ -74,12 +81,37 @@ function getFilesOfDirectory(dirPath : string) : string[] {
     if (fs.statSync(filePath).isDirectory()) {
       getFilesOfDirectory(filePath).forEach(path => codeFiles.push(path));
     }
+    //check if filename is text file and not a hidden file or ignored file
     else {
-      codeFiles.push(filePath);
+      if(isText(filePath) && !isUnixHiddenPath(filePath) && !ignoreFilesWithFileEndings(filePath)) {
+        codeFiles.push(filePath);
+      }
     }
   });
   return codeFiles;
 }
+
+/**
+ * Checks whether a path starts with or contains a hidden file or a folder.
+ * @param {string} source - The path of the file that needs to be validated.
+ * returns {boolean} - `true` if the source is blacklisted and otherwise `false`.
+ * @author https://stackoverflow.com/questions/8905680/nodejs-check-for-hidden-files/20285137#20285137
+ */
+ var isUnixHiddenPath = function (path : string) {
+  return (/(^|\/)\.[^\/\.]/g).test(path);
+};
+
+//ignore files with certain file endings
+function ignoreFilesWithFileEndings(path : string) {
+  let fileEndings = [".ini"]
+  for (let i = 0, len = fileEndings.length; i < len; i++) {
+    if(path.endsWith(fileEndings[i])) {
+      return true;
+    }
+  }
+  return false;
+}
+
 
 
 

@@ -25,7 +25,7 @@ export default function MarkdownVisualization(props : any) {
         function getCode(key : string) {
                 console.log(props.rerender)
                 const codeFiles = props.codeFiles;
-                const notCached ="Code \"" + key + "\" is not chached. Click refresh!";
+                const notCached ="Code \"" + key + "\" is not cached. Click refresh!";
                 if(codeFiles === undefined) {
                         return notCached;
                 }
