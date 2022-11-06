@@ -203,8 +203,18 @@ export default class MenuBuilder {
         label: '&File',
         submenu: [
           {
-            label: '&Open...',
+            label: '&Open code file...',
             accelerator: 'Ctrl+O',
+            click: () => {
+              this.functions.startImportCodeFile();
+            },
+          },
+          {
+            label: '&Open code file folder...',
+            accelerator: 'Shift+Ctrl+O',
+            click: () => {
+              this.functions.startImportCodeFileFolder();
+            },
           },
           { type: 'separator' },
           {

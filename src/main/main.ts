@@ -17,7 +17,6 @@ import { resolveHtmlPath } from './util';
 import fs  from 'fs'
 import os from 'os'
 import IpcFunctions from './ipcFunctions'
-
 //-------------------------------------------------------------------------------------------------------------
 let functions: IpcFunctions | null = null;
 //export pdf
@@ -30,6 +29,17 @@ ipcMain.handle('saveFile', async function() {
   return functions?.saveFile()
 })
 
+
+//load file
+ipcMain.handle('openFolder', async function() {
+  const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow!, {properties: ['openDirectory']});
+  if (canceled) {
+    return null;
+  } else {
+    return filePaths[0];
+  }
+})
+
 //load file
 ipcMain.handle('loadFile', function(event, args) {
   let data = ""; 
@@ -40,6 +50,37 @@ ipcMain.handle('loadFile', function(event, args) {
   }
   return data;
 })
+
+//open file
+ipcMain.handle('openFile', async function() {
+  const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow!, {properties: ['openFile']});
+  if (canceled) {
+    return null;
+  } else {
+    return filePaths[0];
+  }
+})
+
+// read file paths of specified directory
+ipcMain.handle('readFilePaths', function(event, args) {
+  return getFilesOfDirectory(args);
+})
+
+function getFilesOfDirectory(dirPath : string) : string[] {
+  let files = fs.readdirSync(dirPath);
+  let codeFiles:string[] = [];
+  files.forEach(function (file) {
+    let filePath = path.join(dirPath, file);
+    if (fs.statSync(filePath).isDirectory()) {
+      getFilesOfDirectory(filePath).forEach(path => codeFiles.push(path));
+    }
+    else {
+      codeFiles.push(filePath);
+    }
+  });
+  return codeFiles;
+}
+
 
 
 //-------------------------------------------------------------------------------------------------------------

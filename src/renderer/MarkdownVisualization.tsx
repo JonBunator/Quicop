@@ -23,6 +23,7 @@ export default function MarkdownVisualization(props : any) {
         });
 
         function getCode(key : string) {
+                console.log(props.rerender)
                 const codeFiles = props.codeFiles;
                 const notCached ="Code \"" + key + "\" is not chached. Click refresh!";
                 if(codeFiles === undefined) {
@@ -37,8 +38,8 @@ export default function MarkdownVisualization(props : any) {
 
         function parseSpecialMarkdown() {
                 const regex = /!CodeFile\["(.*)"\]/g;
-                const code = props.code
                 let compiledCode = ""
+                let code = props.code;
                 let match;
                 let start = 0;
                 while ((match = regex.exec(props.code)) != null) {

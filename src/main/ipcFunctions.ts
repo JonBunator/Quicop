@@ -11,11 +11,19 @@ export default class IpcFunctions {
         }
 
         startExportPDF() {
-                this.mainWindow.webContents.send("exportPDFStarted");
+          this.mainWindow.webContents.send("exportPDFStarted");
         }
 
         startExportPDFPath() {
-                this.mainWindow.webContents.send("exportPDFPathStarted");
+          this.mainWindow.webContents.send("exportPDFPathStarted");
+        }
+
+        startImportCodeFileFolder() {
+          this.mainWindow.webContents.send("onImportCodeFileFolder");
+        }
+
+        startImportCodeFile() {
+          this.mainWindow.webContents.send("onImportCodeFile");
         }
 
         //export pdf
@@ -40,9 +48,9 @@ export default class IpcFunctions {
         const dialogOptions = {filters: [{ name: "PDF", extensions: ["pdf"] }]};
         const { canceled, filePath } = await dialog.showSaveDialog(this.mainWindow, dialogOptions);
         if (canceled) {
-          return ""
+          return null;
         } else {
-          return filePath
+          return filePath;
         }
       }
 }
