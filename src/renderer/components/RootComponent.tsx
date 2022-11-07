@@ -1,5 +1,5 @@
 import React, {useState } from 'react';
-import MarkdownEditor from './MarkdownEditor';
+import MarkdownEditor from './MarkdownEditor/MarkdownEditor';
 import PdfExportView from './PdfExportView';
 import { useEffect } from "react";
 
@@ -40,7 +40,7 @@ export default function RootComponent(props : any) {
             window.electronAPI.readFilePaths(directory).then(files => {
               let codeToAppend = "";
               files.forEach((path) => {
-                if(code != "") {
+                if(code.length != 0) {
                   codeToAppend += "\n";
                 }
                 codeToAppend += "!CodeFile[\"" + path + "\"]\n";
@@ -59,8 +59,8 @@ export default function RootComponent(props : any) {
         filePath.then((file) => {
           if(file != null) {
             let codeToAppend = "";
-            if(code != "") {
-              codeToAppend += "";
+            if(code.length != 0) {
+              codeToAppend += "\n";
             }
             codeToAppend = "!CodeFile[\"" + file + "\"]\n";
             setCode(prev => prev + codeToAppend);
@@ -102,10 +102,7 @@ export default function RootComponent(props : any) {
         return (
           <>
           {defaultView && (
-            <>
             <MarkdownEditor code={code} onCodeChange={onCodeChange} codeFiles={codeFiles}/>
-            <button onClick={() => createCodeFilesContent(code)}>Refresh</button>
-            </>
           )}
           {!defaultView && (
             <PdfExportView code={code} path={path} codeFiles={codeFiles}/>

@@ -1,4 +1,4 @@
-import MarkdownVisualization from './MarkdownVisualization'
+import MarkdownVisualization from './MarkdownVisualization/MarkdownVisualization'
 import { useEffect } from "react";
 
 export default function PdfExportView(props : any) {
@@ -6,6 +6,6 @@ export default function PdfExportView(props : any) {
                 window.electronAPI.exportPDF(props.path);
         }, []);
 
-        return (<MarkdownVisualization code={props.code} codeFiles={props.codeFiles}/>
+        return (<MarkdownVisualization code={props.code} codeFiles={props.codeFiles} dark={false}/>
         )
 }

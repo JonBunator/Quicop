@@ -1,0 +1,24 @@
+.q-editor-panels {
+        background: var(--background);
+        display: flex;
+        height: 100%;
+
+        .q-code-editor, .q-markdown-panel {
+                width: 50%;
+                height: 100%;
+                overflow-y: auto;
+        }
+        .q-markdown-panel .q-markdown-visualization {
+                padding: 20px;
+                padding-top: 10px;
+                margin-left: auto;
+                margin-right: auto;
+        }
+
+        .q-code-editor {
+                border-right: 1px solid var(--highlight);
+                .cm-gutters {
+                        background-color: var(--background-lighter);;
+                }
+        }
+}

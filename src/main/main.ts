@@ -94,7 +94,7 @@ function getFilesOfDirectory(dirPath : string) : string[] {
 /**
  * Checks whether a path starts with or contains a hidden file or a folder.
  * @param {string} source - The path of the file that needs to be validated.
- * returns {boolean} - `true` if the source is blacklisted and otherwise `false`.
+ * @returns {boolean} - `true` if the source is blacklisted and otherwise `false`.
  * @author https://stackoverflow.com/questions/8905680/nodejs-check-for-hidden-files/20285137#20285137
  */
  var isUnixHiddenPath = function (path : string) {

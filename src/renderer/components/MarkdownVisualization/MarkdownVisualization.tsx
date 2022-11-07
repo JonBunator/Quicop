@@ -1,7 +1,7 @@
 
 import { marked } from 'marked';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css'
+import './MarkdownVisualization.scss'
 
 export default function MarkdownVisualization(props : any) {
 
@@ -23,7 +23,6 @@ export default function MarkdownVisualization(props : any) {
         });
 
         function getCode(key : string) {
-                console.log(props.rerender)
                 const codeFiles = props.codeFiles;
                 const notCached ="Code \"" + key + "\" is not cached. Click refresh!";
                 if(codeFiles === undefined) {
@@ -56,7 +55,11 @@ export default function MarkdownVisualization(props : any) {
                 return {__html : parseSpecialMarkdown()}
         }
 
+        function isDarkTheme() {
+                return props.dark ? ' q-dark' : ' q-light';
+        }
+
         return(
-                <div className='markdown-generated' dangerouslySetInnerHTML={createMarkup()} />
+                <div className={'q-markdown-visualization' + isDarkTheme()} dangerouslySetInnerHTML={createMarkup()} />
         )
 }
