@@ -1,35 +1,27 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "description": "An editor to quickly convert code files to pdf.",
   "keywords": [
-    "electron",
-    "boilerplate",
-    "react",
-    "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
+    "quick code print",
+    "code2pdf",
+    "code to pdf",
+    "print code"
   ],
-  "homepage": "https://github.com/electron-react-boilerplate/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/JonBunator/Quicop",
   "bugs": {
-    "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
+    "url": "https://github.com/JonBunator/Quicop/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://github.com/JonBunator/Quicop.git"
   },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "JonBunator"
   },
   "contributors": [
     {
-      "name": "Amila Welihinda",
-      "email": "amilajack@gmail.com",
-      "url": "https://github.com/amilajack"
+      "name": "JonBunator",
+      "url": "https://github.com/JonBunator"
     }
   ],
   "main": "./src/main/main.ts",
@@ -196,8 +188,8 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Quicop",
+    "appId": "de.JonBunator.Quicop",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -206,6 +198,7 @@
       "package.json"
     ],
     "afterSign": ".erb/scripts/notarize.js",
+
     "mac": {
       "target": {
         "target": "default",
@@ -239,6 +232,10 @@
         "nsis"
       ]
     },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
     "linux": {
       "target": [
         "AppImage"
@@ -255,12 +252,9 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "JonBunator",
+      "repo": "Quicop"
     }
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "devEngines": {
     "node": ">=14.x",

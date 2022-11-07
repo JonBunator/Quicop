@@ -1,12 +1,11 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "4.6.0",
-  "description": "A foundation for scalable desktop apps",
+  "name": "quicop",
+  "version": "1.0.0",
+  "description": "An editor to quickly convert code files to pdf.",
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "JonBunator",
+    "url": "https://github.com/JonBunator/Quicop"
   },
   "main": "./dist/main/main.js",
   "scripts": {
