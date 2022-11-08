@@ -104,11 +104,16 @@
 
         pre code {
                 display: block;
+				white-space: pre-wrap;
+				overflow-x: auto;
                 border-radius: 4px;
                 background-color: var(--hljs-code-background);
                 padding: 1em;
                 border: 1px solid var(--hljs-code-border);
                 font-size: 0.8rem;
+				span {
+					line-height: 1.3rem
+				}
         }
 
         .hljs {

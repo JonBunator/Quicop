@@ -4,7 +4,6 @@ import {
   shell,
   BrowserWindow,
   MenuItemConstructorOptions,
-  ipcRenderer
 } from 'electron';
 
 import IpcFunctions from './ipcFunctions'
@@ -203,15 +202,15 @@ export default class MenuBuilder {
         label: '&File',
         submenu: [
           {
-            label: '&Open code file...',
-            accelerator: 'Ctrl+O',
+            label: '&Import code file...',
+            accelerator: 'Ctrl+I',
             click: () => {
               this.functions.startImportCodeFile();
             },
           },
           {
-            label: '&Open code file folder...',
-            accelerator: 'Shift+Ctrl+O',
+            label: '&Import code file folder...',
+            accelerator: 'Shift+Ctrl+I',
             click: () => {
               this.functions.startImportCodeFileFolder();
             },
@@ -241,77 +240,78 @@ export default class MenuBuilder {
           },
         ],
       },
+	  {
+        label: '&Edit',
+        submenu:
+		[
+			{
+				label: '&Refresh code files',
+				accelerator: 'Ctrl+s',
+				click: () => {
+					this.functions.refreshCodeFiles();
+				},
+			},
+			{ type: 'separator' },
+			{ role: 'undo'},
+			{ role: 'redo'},
+			{ type: 'separator' },
+			{ role: 'cut' },
+            { role: 'copy' },
+            { role: 'paste' },
+			{ role: 'selectAll' },
+        ],
+      },
+
       {
         label: '&View',
         submenu:
-          process.env.NODE_ENV === 'development' ||
-          process.env.DEBUG_PROD === 'true'
-            ? [
-                {
-                  label: '&Reload',
-                  accelerator: 'Ctrl+R',
-                  click: () => {
-                    this.mainWindow.webContents.reload();
-                  },
-                },
-                {
-                  label: 'Toggle &Full Screen',
-                  accelerator: 'F11',
-                  click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
-                  },
-                },
-                {
-                  label: 'Toggle &Developer Tools',
-                  accelerator: 'Alt+Ctrl+I',
-                  click: () => {
-                    this.mainWindow.webContents.toggleDevTools();
-                  },
-                },
-              ]
-            : [
-                {
-                  label: 'Toggle &Full Screen',
-                  accelerator: 'F11',
-                  click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
-                  },
-                },
-              ],
+		[
+			{
+				label: '&Relaunch application',
+				accelerator: 'Ctrl+Shift+r',
+				click: () => {
+				this.mainWindow.reload();
+				},
+			},
+			{ type: 'separator' },
+			{ role: 'resetZoom' },
+			{ role: 'zoomIn' },
+			{ role: 'zoomOut' },
+			{ type: 'separator' },
+			{
+				label: 'Toggle &Full Screen',
+				accelerator: 'F11',
+				click: () => {
+					this.mainWindow.setFullScreen(
+						!this.mainWindow.isFullScreen()
+					);
+				},
+			},
+        ],
       },
       {
         label: 'Help',
         submenu: [
-          {
-            label: 'Learn More',
-            click() {
-              shell.openExternal('https://electronjs.org');
-            },
-          },
-          {
-            label: 'Documentation',
-            click() {
-              shell.openExternal(
-                'https://github.com/electron/electron/tree/main/docs#readme'
-              );
-            },
-          },
-          {
-            label: 'Community Discussions',
-            click() {
-              shell.openExternal('https://www.electronjs.org/community');
-            },
-          },
-          {
-            label: 'Search Issues',
-            click() {
-              shell.openExternal('https://github.com/electron/electron/issues');
-            },
-          },
+			{
+				label: 'Documentation',
+				click() {
+				shell.openExternal(
+					'https://github.com/JonBunator/Quicop/blob/main/README.md'
+				);
+				},
+			},
+			{
+				label: 'Releases',
+				click() {
+				shell.openExternal('https://github.com/JonBunator/Quicop/releases');
+				},
+			},
+			{
+				label: 'Bug reports',
+				click() {
+				shell.openExternal('https://github.com/JonBunator/Quicop/issues');
+				},
+			},
         ],
       },
     ];

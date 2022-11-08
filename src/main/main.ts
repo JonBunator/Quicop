@@ -42,20 +42,20 @@ ipcMain.handle('openFolder', async function() {
   }
 })
 
-//load file
+//load file, first return value is file content, second value specifies binary error
 ipcMain.handle('loadFile', function(event, args) {
+	console.log(args)
   let data;
-  let binaryFileNameError = "Can't display binary file with path \"" + args + "\"!";
   try {
     data = fs.readFileSync(args);
     //check if binary file
     if(isBinary(args, data)) {
-      return binaryFileNameError;
+      return ["", true];
     }
   } catch(err){
     return null;
   }
-  return data.toString('utf8');
+  return [data.toString('utf8'), false];
 })
 
 //open file

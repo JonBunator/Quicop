@@ -198,7 +198,6 @@
       "package.json"
     ],
     "afterSign": ".erb/scripts/notarize.js",
-
     "mac": {
       "target": {
         "target": "default",
@@ -240,6 +239,7 @@
       "target": [
         "AppImage"
       ],
+      "maintainer": "JonBunator",
       "category": "Development"
     },
     "directories": {

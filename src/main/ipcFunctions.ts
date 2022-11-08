@@ -5,7 +5,7 @@ import os from 'os'
 
 export default class IpcFunctions {
         mainWindow: BrowserWindow;
-      
+
         constructor(mainWindow: BrowserWindow) {
           this.mainWindow = mainWindow;
         }
@@ -23,7 +23,11 @@ export default class IpcFunctions {
         }
 
         startImportCodeFile() {
-          this.mainWindow.webContents.send("onImportCodeFile");
+			this.mainWindow.webContents.send("onImportCodeFile");
+		  }
+
+        refreshCodeFiles() {
+          this.mainWindow.webContents.send("onRefreshCodeFiles");
         }
 
         //export pdf
@@ -41,7 +45,7 @@ export default class IpcFunctions {
                 })
                 this.mainWindow.webContents.send('exportPDFFinished')
         }
-      
+
       //save file
       async saveFile() {
         const dialogOptions = {filters: [{ name: "PDF", extensions: ["pdf"] }]};
