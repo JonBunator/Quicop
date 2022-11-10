@@ -2,8 +2,8 @@
 
 # Quickly convert code files to pdf
 
-[![Quicop license](https://img.shields.io/github/license/JonBunator/Quicop?color=9fbbcc&style=flat-square)](https://github.com/JonBunator/Quicop/blob/main/LICENSE)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/JonBunator/Quicop?color=9fbbcc&style=flat-square)](https://github.com/JonBunator/Quicop/releases)
+[![Quicop license](https://img.shields.io/github/license/JonBunator/Quicop?color=9fbbcc)](https://github.com/JonBunator/Quicop/blob/main/LICENSE)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/JonBunator/Quicop?color=9fbbcc)](https://github.com/JonBunator/Quicop/releases)
 ![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20Linux-9fbbcc)
 
 Quicop _(**Qui**ck **Co**de **P**rint)_ allows you to quickly import code files (supports 197 languages), add some markdown and export the generated pdf.
