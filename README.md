@@ -6,7 +6,7 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/JonBunator/Quicop?color=9fbbcc&style=flat-square)](https://github.com/JonBunator/Quicop/releases)
 ![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20Linux-9fbbcc)
 
-Quicop _(**Qu**ick **Co**de **P**rint)_ allows you to quickly import code files (supports 197 languages), add some markdown and export the generated pdf.
+Quicop _(**Qui**ck **Co**de **P**rint)_ allows you to quickly import code files (supports 197 languages), add some markdown and export the generated pdf.
 
 # ![Quicop sample](https://i.imgur.com/gCR6hGc.gif)
 
@@ -14,8 +14,8 @@ Quicop _(**Qu**ick **Co**de **P**rint)_ allows you to quickly import code files 
 
 New releases are automatically downloaded when you start the application.
 
--   ![Windows](https://github.com/JonBunator/Quicop/releases/download/v1.0.0/Quicop-Setup-1.0.0.exe)
--   ![Linux](https://github.com/JonBunator/Quicop/releases/download/v1.0.0/Quicop-1.0.0.AppImage)
+-   ![Windows v1.0.0](https://github.com/JonBunator/Quicop/releases/download/v1.0.0/Quicop-Setup-1.0.0.exe)
+-   ![Linux v1.0.0](https://github.com/JonBunator/Quicop/releases/download/v1.0.0/Quicop-1.0.0.AppImage)
 
 ## Features
 
