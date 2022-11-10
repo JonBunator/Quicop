@@ -2,7 +2,7 @@
 
 # Quickly convert code files to pdf
 
-[![Quicop license](https://img.shields.io/github/license/JonBunator/Quicop?color=9fbbcc&logo=github&style=flat-square)](https://github.com/JonBunator/Quicop/blob/main/LICENSE)
+[![Quicop license](https://img.shields.io/github/license/JonBunator/Quicop?color=9fbbcc&style=flat-square)](https://github.com/JonBunator/Quicop/blob/main/LICENSE)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/JonBunator/Quicop?color=9fbbcc&style=flat-square)](https://github.com/JonBunator/Quicop/releases)
 ![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20Linux-9fbbcc)
 
