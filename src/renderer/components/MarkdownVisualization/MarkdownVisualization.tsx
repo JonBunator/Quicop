@@ -3,72 +3,95 @@ import hljs from 'highlight.js';
 import './MarkdownVisualization.scss';
 import FileStatus from '../FileStatus';
 
-export default function MarkdownVisualization(props : any) {
-	marked.setOptions({
-        langPrefix: "hljs language-",
-        highlight: highlightCode,
-		breaks: true,
-	});
+export interface MarkdownVisualizationProps {
+	code: string;
+	codeFiles: Map<string, [string, FileStatus]>;
+	dark: boolean;
+}
 
-	function highlightCode(code: string, lang : string) {
+export default function MarkdownVisualization(
+	props: MarkdownVisualizationProps
+) {
+	// eslint-disable-next-line @typescript-eslint/no-shadow
+	function highlightCode(code: string, lang: string) {
 		if (lang && hljs.getLanguage(lang)) {
 			try {
-				return hljs.highlight(code, {language: lang}).value;
-			} catch (err) {}
+				return hljs.highlight(code, { language: lang }).value;
+			} catch (err) {
+				/* empty */
+			}
 		}
 
 		try {
 			return hljs.highlightAuto(code).value;
-		} catch (err) {}
+		} catch (err) {
+			/* empty */
+		}
 		return '';
 	}
 
-    function getCode(key : string) {
-		let error = "```bash\nFile \"" + key + "\" is not cached. Click refresh!\n```";
-        if(props.codeFiles.has(key)) {
-			//get file extension
-			const [code, fileStatus] : [string, FileStatus] = props.codeFiles.get(key)
-			if(fileStatus == FileStatus.BinaryFileError) {
-				error = "```bash\nBinary file with path \"" + key + "\" is not displayable!\n```";
+	marked.setOptions({
+		langPrefix: 'hljs language-',
+		highlight: highlightCode,
+		breaks: true,
+	});
 
-			} else if(fileStatus == FileStatus.PathNotFoundError) {
-				error = "```bash\nFile with path \"" + key + "\" was not found!\n```";
-
-			} else if(fileStatus == FileStatus.Success) {
-				const language = key.slice((key.lastIndexOf(".") - 1 >>> 0) + 2);
-				const prefix = "<pre><code>";
-				const suffix = "</code></pre>";
-				return prefix + highlightCode(code, language) + suffix;
+	function getCode(key: string) {
+		let error = `\`\`\`bash\nFile "${key}" is not cached. Click refresh!\n\`\`\``;
+		const { codeFiles } = props;
+		if (codeFiles.has(key)) {
+			// get file extension
+			const [codeContent, fileStatus]: [string, FileStatus] =
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				codeFiles.get(key)!;
+			if (fileStatus === FileStatus.BinaryFileError) {
+				error = `\`\`\`bash\nBinary file with path "${key}" is not displayable!\n\`\`\``;
+			} else if (fileStatus === FileStatus.PathNotFoundError) {
+				error = `\`\`\`bash\nFile with path "${key}" was not found!\n\`\`\``;
+			} else if (fileStatus === FileStatus.Success) {
+				const language = key.slice(
+					// eslint-disable-next-line no-bitwise
+					((key.lastIndexOf('.') - 1) >>> 0) + 2
+				);
+				const prefix = '<pre><code>';
+				const suffix = '</code></pre>';
+				return prefix + highlightCode(codeContent, language) + suffix;
 			}
-        }
-        return marked.parse(error);
-    }
+		}
+		return marked.parse(error);
+	}
 
-    function parseSpecialMarkdown() {
-        const regex = /!CodeFile\["(.*)"\]/g;
-        let compiledCode = ""
-        let code = props.code;
-        let match;
-        let start = 0;
-        while ((match = regex.exec(props.code)) != null) {
-            let path : string = match[1];
-            compiledCode += marked.parse(code.substring(start, match.index))
-            compiledCode += getCode(path)
-            start = regex.lastIndex
-        }
-        compiledCode += marked.parse(code.substring(start))
-        return compiledCode;
-    }
+	function parseSpecialMarkdown() {
+		const { code } = props;
+		const regex = /!CodeFile\["(.*)"\]/g;
+		let compiledCode = '';
+		let match;
+		let start = 0;
+		// eslint-disable-next-line no-cond-assign
+		while ((match = regex.exec(code)) != null) {
+			const path: string = match[1];
+			compiledCode += marked.parse(code.substring(start, match.index));
+			compiledCode += getCode(path);
+			start = regex.lastIndex;
+		}
+		compiledCode += marked.parse(code.substring(start));
+		return compiledCode;
+	}
 
-    function createMarkup() {
-        return {__html : parseSpecialMarkdown()}
-    }
+	function createMarkup() {
+		return { __html: parseSpecialMarkdown() };
+	}
 
-    function isDarkTheme() {
-        return props.dark ? ' q-dark' : ' q-light';
-    }
+	function isDarkTheme() {
+		const { dark } = props;
+		return dark ? ' q-dark' : ' q-light';
+	}
 
-    return(
-        <div className={'q-markdown-visualization' + isDarkTheme()} dangerouslySetInnerHTML={createMarkup()} />
-    )
+	return (
+		<div
+			className={`q-markdown-visualization${isDarkTheme()}`}
+			// eslint-disable-next-line react/no-danger
+			dangerouslySetInnerHTML={createMarkup()}
+		/>
+	);
 }

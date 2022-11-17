@@ -1,7 +1,7 @@
 enum FileStatus {
 	Success,
 	PathNotFoundError,
-	BinaryFileError
+	BinaryFileError,
 }
 
 export default FileStatus;
