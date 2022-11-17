@@ -9,11 +9,9 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import fs from 'fs';
-import { isText, isBinary } from 'istextorbinary';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import IpcFunctions from './ipcFunctions';
@@ -136,9 +134,10 @@ app.whenReady()
 	})
 	.catch(console.log);
 
-//-------------------------------------------------------------------------------------------------------------
+// ipc functions
+//------------------------------------------------------------------------------
 // export pdf
-ipcMain.on('exportPDF', (event, args) => {
+ipcMain.on('exportPDF', (_event, args) => {
 	functions?.exportPDF(args);
 });
 
@@ -149,89 +148,20 @@ ipcMain.handle('saveFile', async () => {
 
 // load file
 ipcMain.handle('openFolder', async () => {
-	const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow!, {
-		properties: ['openDirectory'],
-	});
-	if (canceled) {
-		return null;
-	}
-	return filePaths[0];
+	return functions?.openFolder();
 });
 
-// load file, first return value is file content, second value specifies binary error
-ipcMain.handle('loadFile', (event, args) => {
-	console.log(args);
-	let data;
-	try {
-		data = fs.readFileSync(args);
-		// check if binary file
-		if (isBinary(args, data)) {
-			return ['', true];
-		}
-	} catch (err) {
-		return null;
-	}
-	return [data.toString('utf8'), false];
+// load file
+ipcMain.handle('loadFile', (_event, args) => {
+	return functions?.loadFile(args);
 });
 
 // open file
 ipcMain.handle('openFile', async () => {
-	const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow!, {
-		properties: ['openFile'],
-	});
-	if (canceled) {
-		return null;
-	}
-	return filePaths[0];
+	return functions?.openFile();
 });
-
-/**
- * Checks whether a path starts with or contains a hidden file or a folder.
- * @param {string} source - The path of the file that needs to be validated.
- * @returns {boolean} - `true` if the source is blacklisted and otherwise `false`.
- * @author https://stackoverflow.com/questions/8905680/nodejs-check-for-hidden-files/20285137#20285137
- * */
-function isUnixHiddenPath(unixPath: string) {
-	// eslint-disable-next-line no-useless-escape
-	return /(^|\/)\.[^\/\.]/g.test(unixPath);
-}
-
-// ignore files with certain file endings
-function ignoreFilesWithFileEndings(filePath: string) {
-	const fileEndings = ['.ini'];
-	for (let i = 0, len = fileEndings.length; i < len; i += 1) {
-		if (filePath.endsWith(fileEndings[i])) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function getFilesOfDirectory(dirPath: string): string[] {
-	const files = fs.readdirSync(dirPath);
-	const codeFiles: string[] = [];
-	files.forEach((file) => {
-		const filePath = path.join(dirPath, file);
-		if (fs.statSync(filePath).isDirectory()) {
-			getFilesOfDirectory(filePath).forEach((currentPath) =>
-				codeFiles.push(currentPath)
-			);
-		}
-		// check if filename is text file and not a hidden file or ignored file
-		else if (
-			isText(filePath) &&
-			!isUnixHiddenPath(filePath) &&
-			!ignoreFilesWithFileEndings(filePath)
-		) {
-			codeFiles.push(filePath);
-		}
-	});
-	return codeFiles;
-}
 
 // read file paths of specified directory
-ipcMain.handle('readFilePaths', (event, args) => {
-	return getFilesOfDirectory(args);
+ipcMain.handle('readFilePaths', (_event, args) => {
+	return functions?.getFilesOfDirectory(args);
 });
-
-//-------------------------------------------------------------------------------------------------------------
