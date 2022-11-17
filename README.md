@@ -14,8 +14,8 @@ Quicop _(**Qui**ck **Co**de **P**rint)_ allows you to quickly import code files 
 
 New releases are automatically downloaded when you start the application.
 
--   ![Windows v1.0.0](https://github.com/JonBunator/Quicop/releases/download/v1.0.0/Quicop-Setup-1.0.0.exe)
--   ![Linux v1.0.0](https://github.com/JonBunator/Quicop/releases/download/v1.0.0/Quicop-1.0.0.AppImage)
+-   ![Windows v1.0.1](https://github.com/JonBunator/Quicop/releases/download/v1.0.1/Quicop-Setup-1.0.1.exe)
+-   ![Linux v1.0.1](https://github.com/JonBunator/Quicop/releases/download/v1.0.1/Quicop-1.0.1.AppImage)
 
 ## Features
 
