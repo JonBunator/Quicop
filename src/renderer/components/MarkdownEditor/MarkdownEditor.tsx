@@ -1,6 +1,6 @@
 import CodeEditor from '../CodeEditor';
-import MarkdownVisualization from '../MarkdownVisualization/MarkdownVisualization'
-import './MarkdownEditor.scss'
+import MarkdownVisualization from '../MarkdownVisualization/MarkdownVisualization';
+import './MarkdownEditor.scss';
 
 export default function MarkdownEditor(props : any) {
         return (
