@@ -103,6 +103,10 @@
   "dependencies": {
     "@codemirror/lang-markdown": "^6.0.4",
     "@codemirror/language-data": "^6.1.0",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.14",
+    "@mui/material": "^5.10.14",
     "@uiw/codemirror-theme-github": "^4.12.4",
     "@uiw/react-codemirror": "^4.12.4",
     "electron-debug": "^3.2.0",

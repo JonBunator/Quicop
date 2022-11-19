@@ -1,24 +1,44 @@
-.q-editor-panels {
-        background: var(--background);
-        display: flex;
-        height: 100%;
+.q-editor-main-window {
+	.q-editor-panels {
+			background: var(--background);
+			display: flex;
+			height: calc(100vh - 26px);
 
-        .q-code-editor, .q-markdown-panel {
-                width: 50%;
-                height: 100%;
-                overflow-y: auto;
-        }
-        .q-markdown-panel .q-markdown-visualization {
-                padding: 20px;
-                padding-top: 10px;
-                margin-left: auto;
-                margin-right: auto;
-        }
+			.q-code-editor, .q-markdown-panel {
+					width: 50%;
+					height: 100%;
+					overflow-y: auto;
+			}
+			.q-markdown-panel .q-markdown-visualization {
+					padding: 20px;
+					padding-top: 10px;
+					margin-left: auto;
+					margin-right: auto;
+			}
 
-        .q-code-editor {
-                border-right: 1px solid var(--highlight);
-                .cm-gutters {
-                        background-color: var(--background-lighter);;
-                }
-        }
+			.q-code-editor {
+					border-right: 1px solid var(--highlight);
+					.cm-gutters {
+							background-color: var(--background-lighter);;
+					}
+			}
+	}
+	.q-editor-footer {
+		display: flex;
+		flex-direction: row-reverse;
+		align-items: center;
+		height: 25px;
+		background-color: var(--background-lighter);
+		border-top: solid var(--highlight) 1px;
+		.q-editor-footer-version {
+			line-height: 18px;
+			width: fit-content;
+			border-radius: 3px;
+			margin-right: 8px;
+			padding: 0 6px;
+			font-size: 0.8rem;
+			background-color: var(--highlight);
+			color: var(--text-color);
+		}
+	}
 }
