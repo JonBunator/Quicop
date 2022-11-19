@@ -1,5 +1,5 @@
-import CodeEditor from '../CodeEditor';
 import FileStatus from '../FileStatus';
+import CodeEditor from './CodeEditor';
 import MarkdownVisualization from '../MarkdownVisualization/MarkdownVisualization';
 import './MarkdownEditor.scss';
 
