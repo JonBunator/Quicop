@@ -103,6 +103,7 @@
   "dependencies": {
     "@codemirror/lang-markdown": "^6.0.4",
     "@codemirror/language-data": "^6.1.0",
+    "@primer/react": "^35.14.2",
     "@uiw/codemirror-theme-github": "^4.12.4",
     "@uiw/react-codemirror": "^4.12.4",
     "electron-debug": "^3.2.0",
@@ -115,7 +116,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.3",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",

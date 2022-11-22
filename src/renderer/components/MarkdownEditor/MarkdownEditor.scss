@@ -1,5 +1,4 @@
 .q-editor-panels {
-        background: var(--background);
         display: flex;
         height: 100%;
 
@@ -13,12 +12,5 @@
                 padding-top: 10px;
                 margin-left: auto;
                 margin-right: auto;
-        }
-
-        .q-code-editor {
-                border-right: 1px solid var(--highlight);
-                .cm-gutters {
-                        background-color: var(--background-lighter);;
-                }
         }
 }
