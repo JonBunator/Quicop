@@ -1,13 +1,16 @@
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
-import { githubDark } from '@uiw/codemirror-theme-github';
 import { MarkdownConfig } from '@lezer/markdown';
 import { styleTags, tags } from '@lezer/highlight';
+import { useTheme } from '@primer/react';
+import { editorThemeDark, editorThemeLight } from 'renderer/Theme';
 
 export interface CodeEditorProps {
 	code: string;
 	onChange: (value: string, ...args: unknown[]) => void;
+	// eslint-disable-next-line react/require-default-props
+	className?: string;
 }
 
 const PathsDelim = { resolve: 'Path', mark: 'PathMark' };
@@ -57,17 +60,19 @@ const MarkCodeFiles: MarkdownConfig = {
 	],
 	props: [
 		styleTags({
-			CodeFilesExclamation: tags.arithmeticOperator,
+			CodeFilesExclamation: tags.keyword,
 			CodeFilesKeyword: tags.heading1,
 		}),
 	],
 };
 
 export default function CodeEditor(props: CodeEditorProps) {
-	const { code, onChange } = props;
+	const { code, onChange, className } = props;
+	// can be light or dark
+	const themeMode = useTheme().resolvedColorMode;
 	return (
 		<CodeMirror
-			className="q-code-editor"
+			className={`q-code-editor ${className}`}
 			extensions={[
 				markdown({
 					base: markdownLanguage,
@@ -77,7 +82,7 @@ export default function CodeEditor(props: CodeEditorProps) {
 			]}
 			height="100%"
 			value={code}
-			theme={githubDark}
+			theme={themeMode === 'night' ? editorThemeDark : editorThemeLight}
 			onChange={onChange}
 		/>
 	);
