@@ -14,12 +14,16 @@ contextBridge.exposeInMainWorld('electronAPI', {
 		ipcRenderer.on('onImportCodeFile', func),
 	onRefreshCodeFiles: (func: (...args: unknown[]) => void) =>
 		ipcRenderer.on('onRefreshCodeFiles', func),
+	onNavigateToSettingsPage: (func: (...args: unknown[]) => void) =>
+		ipcRenderer.on('onNavigateToSettingsPage', func),
 	removeAllImportCodeFileFolderListeners: () =>
 		ipcRenderer.removeAllListeners('onImportCodeFileFolder'),
 	removeAllImportCodeFileListeners: () =>
 		ipcRenderer.removeAllListeners('onImportCodeFile'),
 	removeAllRefreshCodeFilesListeners: () =>
 		ipcRenderer.removeAllListeners('onRefreshCodeFiles'),
+	removeAllNavigateToSettingsPageListeners: () =>
+		ipcRenderer.removeAllListeners('onNavigateToSettingsPage'),
 	exportPDFFinished: () => ipcRenderer.send('exportPDFFinished'),
 	saveFile: () => ipcRenderer.invoke('saveFile'),
 	openFile: () => ipcRenderer.invoke('openFile'),

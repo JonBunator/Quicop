@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import MarkdownEditor from './MarkdownEditor/MarkdownEditor';
 import PdfExportView from './PdfExportView';
 import FileStatus from './FileStatus';
@@ -128,6 +129,17 @@ export default function RootComponent() {
 			setDefaultView(true);
 		});
 	}, []);
+
+	// navigate to settings page
+	const navigate = useNavigate();
+	useEffect(() => {
+		window.electronAPI.onNavigateToSettingsPage(() => {
+			navigate('/settings');
+		});
+		return () => {
+			window.electronAPI.removeAllNavigateToSettingsPageListeners();
+		};
+	}, [navigate]);
 
 	return (
 		<>

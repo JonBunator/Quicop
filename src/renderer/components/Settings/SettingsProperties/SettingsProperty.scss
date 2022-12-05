@@ -1,0 +1,16 @@
+.settings-property {
+	width: 100%;
+	padding: 20px;
+	margin: 10px 0;
+	border-radius: 4px;
+	display: flex;
+	flex-direction: column;
+	.header {
+		margin-bottom: 2px;
+	}
+	.description {
+		margin-bottom: 10px;
+		font-size: 1rem;
+		font-weight: 400;
+	}
+}

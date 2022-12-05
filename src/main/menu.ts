@@ -259,6 +259,13 @@ export default class MenuBuilder {
 					},
 					{ type: 'separator' },
 					{
+						label: '&Settings',
+						accelerator: 'Ctrl+,',
+						click: () => {
+							this.functions.navigateToSettingsPage();
+						},
+					},
+					{
 						label: '&Exit',
 						accelerator: 'Alt+F4',
 						click: () => {

@@ -20,9 +20,13 @@ declare global {
 			onImportCodeFile(
 				func: (...args: unknown[]) => void
 			): (() => void) | undefined;
+			onNavigateToSettingsPage(
+				func: (...args: unknown[]) => void
+			): (() => void) | undefined;
 			removeAllImportCodeFileFolderListeners(): void;
 			removeAllRefreshCodeFilesListeners(): void;
 			removeAllImportCodeFileListeners(): void;
+			removeAllNavigateToSettingsPageListeners(): void;
 			exportPDFFinished(): void;
 			saveFile(): Promise<string>;
 			openFolder(): Promise<string>;

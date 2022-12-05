@@ -1,0 +1,15 @@
+{
+	"general": {
+		"color-mode": {
+			"header": "Color theme",
+			"description": "some description",
+			"type": "enum",
+			"values": {
+				"auto": "Auto",
+				"dark": "Dark",
+				"light": "Light"
+			},
+			"default-value": "auto"
+		}
+	}
+}

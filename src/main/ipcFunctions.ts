@@ -3,12 +3,14 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import { isText, isBinary } from 'istextorbinary';
+import Store from 'electron-store';
 
 export default class IpcFunctions {
 	mainWindow: BrowserWindow;
 
 	constructor(mainWindow: BrowserWindow) {
 		this.mainWindow = mainWindow;
+		Store.initRenderer();
 	}
 
 	startExportPDF() {
@@ -29,6 +31,10 @@ export default class IpcFunctions {
 
 	refreshCodeFiles() {
 		this.mainWindow.webContents.send('onRefreshCodeFiles');
+	}
+
+	navigateToSettingsPage() {
+		this.mainWindow.webContents.send('onNavigateToSettingsPage');
 	}
 
 	// export pdf
