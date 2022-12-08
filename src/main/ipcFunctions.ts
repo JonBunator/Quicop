@@ -8,9 +8,11 @@ import Store from 'electron-store';
 export default class IpcFunctions {
 	mainWindow: BrowserWindow;
 
+	settingsStore: Store;
+
 	constructor(mainWindow: BrowserWindow) {
 		this.mainWindow = mainWindow;
-		Store.initRenderer();
+		this.settingsStore = new Store();
 	}
 
 	startExportPDF() {
@@ -159,4 +161,14 @@ export default class IpcFunctions {
 		});
 		return codeFiles;
 	};
+
+	// set settings
+	setSettingsProperty(id: string, value: string) {
+		this.settingsStore.set(id, value);
+	}
+
+	// get settings
+	getSettingsProperty(id: string): string {
+		return this.settingsStore.get(id) as string;
+	}
 }

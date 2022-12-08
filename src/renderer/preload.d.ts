@@ -27,12 +27,15 @@ declare global {
 			removeAllRefreshCodeFilesListeners(): void;
 			removeAllImportCodeFileListeners(): void;
 			removeAllNavigateToSettingsPageListeners(): void;
+			removeAllSettingsPropertyChangedListeners(): void;
 			exportPDFFinished(): void;
 			saveFile(): Promise<string>;
 			openFolder(): Promise<string>;
 			openFile(): Promise<string>;
 			readFilePaths(path: string): Promise<string[]>;
 			loadFile(path: string): Promise<[string, boolean]>;
+			setSettingsProperty(id: string, value: string): void;
+			getSettingsProperty(id: string): Promise<string>;
 		};
 	}
 }

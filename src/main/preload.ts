@@ -30,4 +30,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
 	openFolder: () => ipcRenderer.invoke('openFolder'),
 	readFilePaths: (path: string) => ipcRenderer.invoke('readFilePaths', path),
 	loadFile: (path: string) => ipcRenderer.invoke('loadFile', path),
+	setSettingsProperty: (id: string, value: string) =>
+		ipcRenderer.send('setSettingsProperty', id, value),
+	getSettingsProperty: (id: string) =>
+		ipcRenderer.invoke('getSettingsProperty', id),
 });

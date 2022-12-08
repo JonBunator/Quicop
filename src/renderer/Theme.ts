@@ -87,9 +87,6 @@ export const editorThemeDark = createTheme({
 });
 
 export const GlobalStyle = createGlobalStyle`
-	#root {
-		background-color: ${themeGet('colors.canvas.default')};
-	}
 	::-webkit-scrollbar-track {
 		background-color: ${themeGet('colors.canvas.subtle')};
 	}

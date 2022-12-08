@@ -165,3 +165,13 @@ ipcMain.handle('openFile', async () => {
 ipcMain.handle('readFilePaths', (_event, args) => {
 	return functions?.getFilesOfDirectory(args);
 });
+
+// get settings property
+ipcMain.handle('getSettingsProperty', (_event, id) => {
+	return functions?.getSettingsProperty(id);
+});
+
+// set settings property
+ipcMain.on('setSettingsProperty', (_event, id, value) => {
+	functions?.setSettingsProperty(id, value);
+});

@@ -1,26 +1,29 @@
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
-import { Button, Box, Text } from '@primer/react';
+import { Button, Box, Text, themeGet } from '@primer/react';
 import './SettingsPage.scss';
+import styled from 'styled-components';
 import EnumProperty from './SettingsProperties/EnumProperty';
-import BooleanProperty from './SettingsProperties/BooleanProperty';
-import StringProperty from './SettingsProperties/StringProperty';
-import useSettingsService from './SettingsService';
+import { useSettings } from './SettingsProvicer';
+
+const SettingsPagePanel = styled.div`
+	background-color: ${themeGet('colors.canvas.default')};
+`;
 
 export default function SettingsPage() {
 	const navigate = useNavigate();
-	// const { setSettingsProperty, getSettings } = useSettingsService();
+	const settings = useSettings();
 
 	const exitSettingsPage = useCallback(() => {
 		navigate(-1);
 	}, [navigate]);
 
 	const propertyChanged = async (id: string, value: string) => {
-		// setSettingsProperty(id, value);
+		settings?.setSettingsProperty(id, value);
 	};
 
 	return (
-		<>
+		<SettingsPagePanel className="q-settings-page">
 			<Box marginX="clamp(15px, 5%, 100px);">
 				<Box
 					display="flex"
@@ -50,9 +53,17 @@ export default function SettingsPage() {
 						description="Select the color theme of the application. If 'auto' is set, the operating system preference is used to set the correct theme."
 						values={['auto', 'night', 'day']}
 						displayValues={['Auto', 'Dark', 'Light']}
-						defaultValue="auto"
+						defaultValue={
+							settings?.getSettingsProperty(
+								'color-mode'
+							) as string
+						}
 						onValueChange={propertyChanged}
 					/>
+					<Text color="fg.default" fontSize="1rem">
+						More settings coming soonish..
+					</Text>
+					{/*
 					<BooleanProperty
 						id="auto-updates"
 						header="Enable auto updates"
@@ -79,8 +90,9 @@ export default function SettingsPage() {
 						defaultValue="50"
 						onValueChange={propertyChanged}
 					/>
+					*/}
 				</Box>
 			</Box>
-		</>
+		</SettingsPagePanel>
 	);
 }
