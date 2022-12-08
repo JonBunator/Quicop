@@ -1,0 +1,33 @@
+{
+	"sections":
+	[
+		{
+		"header": "General",
+		"properties":
+		[
+			{
+				"id": "color-mode",
+				"header": "Color theme",
+				"description": "Select the color theme of the application. If 'auto' is set, the operating system preference is used to set the correct theme.",
+				"defaultValue": "auto",
+				"specializedProp": {
+					"type": "enum",
+					"values": [["auto", "Auto"], ["dark", "Dark"], ["light", "Light"]]
+				}
+			},
+
+			{
+				"id": "limit-file-imports",
+				"header": "Limit file imports",
+				"description": "This limits the number of file you can import via 'Import code file folder'. This is to ensure that the application does not crash when you import a folder with too many files.",
+				"defaultValue": "50",
+				"specializedProp": {
+					"type": "numberInput",
+					"minValue": 1,
+					"maxValue": 10000
+				}
+			}
+		]
+		}
+	]
+}

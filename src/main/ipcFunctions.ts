@@ -3,12 +3,16 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import { isText, isBinary } from 'istextorbinary';
+import Store from 'electron-store';
 
 export default class IpcFunctions {
 	mainWindow: BrowserWindow;
 
+	settingsStore: Store;
+
 	constructor(mainWindow: BrowserWindow) {
 		this.mainWindow = mainWindow;
+		this.settingsStore = new Store();
 	}
 
 	startExportPDF() {
@@ -29,6 +33,10 @@ export default class IpcFunctions {
 
 	refreshCodeFiles() {
 		this.mainWindow.webContents.send('onRefreshCodeFiles');
+	}
+
+	navigateToSettingsPage() {
+		this.mainWindow.webContents.send('onNavigateToSettingsPage');
 	}
 
 	// export pdf
@@ -153,4 +161,14 @@ export default class IpcFunctions {
 		});
 		return codeFiles;
 	};
+
+	// set settings
+	setSettingsProperty(id: string, value: string) {
+		this.settingsStore.set(id, value);
+	}
+
+	// get settings
+	getSettingsProperty(id: string): string {
+		return this.settingsStore.get(id) as string;
+	}
 }
