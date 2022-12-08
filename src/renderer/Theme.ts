@@ -80,8 +80,8 @@ export const editorThemeDark = createTheme({
 		},
 		{ tag: [t.string, t.meta, t.regexp], color: '#a5d6ff' },
 		{ tag: [t.name, t.quote], color: '#7ee787' },
-		{ tag: [t.heading], color: '#7f7aff', fontWeight: 'bold' },
-		{ tag: [t.emphasis], color: '#7f7aff', fontStyle: 'italic' },
+		{ tag: [t.heading], color: '#d2a8ff', fontWeight: 'bold' },
+		{ tag: [t.emphasis], color: '#d2a8ff', fontStyle: 'italic' },
 		{ tag: [t.deleted], color: '#ffdcd7', backgroundColor: 'ffeef0' },
 	],
 });
