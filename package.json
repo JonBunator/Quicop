@@ -119,6 +119,7 @@
     "react-icons": "^4.6.0",
     "react-markdown": "^8.0.3",
     "react-router-dom": "^6.3.0",
+    "react-split": "^2.0.14",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {

@@ -87,6 +87,15 @@ export const editorThemeDark = createTheme({
 });
 
 export const GlobalStyle = createGlobalStyle`
+	.gutter.gutter-horizontal {
+		background: linear-gradient(
+			${themeGet('colors.border.default')},
+			${themeGet('colors.border.default')}
+		)
+		no-repeat center/1px 100%;
+		background-color: ${themeGet('colors.canvas.default')};
+	}
+
 	::-webkit-scrollbar-track {
 		background-color: ${themeGet('colors.canvas.subtle')};
 	}
