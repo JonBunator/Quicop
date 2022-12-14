@@ -1,5 +1,6 @@
 import { themeGet, useTheme } from '@primer/react';
 import styled from 'styled-components';
+import Split from 'react-split';
 import FileStatus from '../FileStatus';
 import CodeEditor from './CodeEditor';
 import MarkdownVisualization from '../MarkdownVisualization/MarkdownVisualization';
@@ -10,9 +11,6 @@ export interface MarkdownEditorProps {
 	onCodeChange: (value: string, ...args: unknown[]) => void;
 	codeFiles: Map<string, [string, FileStatus]>;
 }
-const CodeEditorPanel = styled(CodeEditor)`
-	border-right: 1px solid ${themeGet('colors.border.default')};
-`;
 
 const MarkdownPanel = styled.div`
 	background-color: ${themeGet('colors.canvas.default')};
@@ -23,8 +21,8 @@ export default function MarkdownEditor(props: MarkdownEditorProps) {
 	// can be light or dark
 	const themeMode = useTheme().resolvedColorMode;
 	return (
-		<div className="q-editor-panels">
-			<CodeEditorPanel code={code} onChange={onCodeChange} />
+		<Split className="q-editor-panels">
+			<CodeEditor code={code} onChange={onCodeChange} />
 			<MarkdownPanel className="q-markdown-panel">
 				<MarkdownVisualization
 					code={code}
@@ -32,6 +30,6 @@ export default function MarkdownEditor(props: MarkdownEditorProps) {
 					dark={themeMode === 'night'}
 				/>
 			</MarkdownPanel>
-		</div>
+		</Split>
 	);
 }
