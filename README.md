@@ -1,4 +1,4 @@
-<img src="https://github.com/JonBunator/Quicop/blob/main/assets/github/logo.png" width="400" />
+<img src="https://github.com/JonBunator/Quicop/blob/main/src/assets/github/logo.png" width="400" />
 
 # Quickly convert code files to pdf
 
