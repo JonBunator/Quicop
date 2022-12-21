@@ -7,6 +7,10 @@
                 height: 100%;
                 overflow-y: auto;
         }
+		.q-code-editor .cm-lineNumbers {
+			min-width: 35px;
+		}
+
         .q-markdown-panel .q-markdown-visualization {
                 padding: 20px;
                 padding-top: 10px;
