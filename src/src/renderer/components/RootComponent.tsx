@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MarkdownEditor from './MarkdownEditor/MarkdownEditor';
 import PdfExportView from './PdfExportView';
 import FileStatus from './FileStatus';
-import { useSettings } from './Settings/SettingsProvicer';
+import { useSettings } from './Settings/SettingsProvider';
 
 export default function RootComponent() {
 	const settings = useSettings();

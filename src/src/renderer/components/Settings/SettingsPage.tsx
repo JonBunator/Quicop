@@ -4,7 +4,7 @@ import { Button, Box, Text, themeGet } from '@primer/react';
 import './SettingsPage.scss';
 import styled from 'styled-components';
 import EnumProperty from './SettingsProperties/EnumProperty';
-import { useSettings } from './SettingsProvicer';
+import { useSettings } from './SettingsProvider';
 
 const SettingsPagePanel = styled.div`
 	background-color: ${themeGet('colors.canvas.default')};
@@ -13,7 +13,6 @@ const SettingsPagePanel = styled.div`
 export default function SettingsPage() {
 	const navigate = useNavigate();
 	const settings = useSettings();
-
 	const exitSettingsPage = useCallback(() => {
 		navigate(-1);
 	}, [navigate]);

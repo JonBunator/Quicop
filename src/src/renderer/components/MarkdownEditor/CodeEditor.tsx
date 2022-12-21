@@ -4,7 +4,7 @@ import { languages } from '@codemirror/language-data';
 import { MarkdownConfig } from '@lezer/markdown';
 import { styleTags, tags } from '@lezer/highlight';
 import { useTheme } from '@primer/react';
-import { editorThemeDark, editorThemeLight } from 'renderer/Theme';
+import { editorThemeDark, editorThemeLight } from 'renderer/components/Theme';
 
 export interface CodeEditorProps {
 	code: string;

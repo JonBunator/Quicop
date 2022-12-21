@@ -5,8 +5,6 @@ import {
 	useState,
 	useEffect,
 } from 'react';
-import { ThemeProvider } from '@primer/react';
-import { GlobalStyle, systemTheme } from 'renderer/Theme';
 import { settingsData } from './Settings';
 
 const SettingsContext = createContext<SettingsProps | undefined>(undefined);
@@ -37,7 +35,6 @@ function getDefaultValues(): Map<string, string> {
 export default function SettingsProvider(props: Props) {
 	const { children } = props;
 	const [settings, setSettings] = useState(getDefaultValues());
-	const [colorMode, setColorMode] = useState('auto');
 
 	// change internal settings
 	function setSettingsProp(id: string, value: string) {
@@ -65,12 +62,6 @@ export default function SettingsProvider(props: Props) {
 		return '';
 	}
 
-	// when color mode changes
-	useEffect(() => {
-		setColorMode(getSettingsProperty('color-mode'));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [settings]);
-
 	// sets the value of the setting with the specified id
 	function setSettingsProperty(id: string, value: string) {
 		if (settings.get(id) !== value) {
@@ -83,10 +74,7 @@ export default function SettingsProvider(props: Props) {
 		<SettingsContext.Provider
 			value={{ settings, setSettingsProperty, getSettingsProperty }}
 		>
-			<ThemeProvider theme={systemTheme} colorMode={colorMode}>
-				<GlobalStyle />
-				{children}
-			</ThemeProvider>
+			{children}
 		</SettingsContext.Provider>
 	);
 }
