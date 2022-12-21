@@ -13,11 +13,11 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                   node-version: 19
-            - name: change directory
-              run: cd src
             - name: install dependencies
+              working-directory: ./src
               run: npm install
             - name: publish
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              working-directory: ./src
               run: npm run publish
