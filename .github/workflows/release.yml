@@ -13,6 +13,8 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                   node-version: 19
+            - name: change directory
+              run: cd src
             - name: install dependencies
               run: npm install
             - name: publish
