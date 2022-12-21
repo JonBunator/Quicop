@@ -12,6 +12,7 @@ import { settingsData } from './Settings';
 const SettingsContext = createContext<SettingsProps | undefined>(undefined);
 
 interface SettingsProps {
+	settings: Map<string, string>;
 	setSettingsProperty: (id: string, value: string) => void;
 	getSettingsProperty: (id: string) => string;
 }
@@ -43,6 +44,7 @@ export default function SettingsProvider(props: Props) {
 			setSettings((prev) => new Map<string, string>(prev.set(id, value)));
 		}
 	}
+
 	// load settings from saved config
 	useEffect(() => {
 		settings.forEach(async (value, id) => {
@@ -72,7 +74,7 @@ export default function SettingsProvider(props: Props) {
 
 	return (
 		<SettingsContext.Provider
-			value={{ setSettingsProperty, getSettingsProperty }}
+			value={{ settings, setSettingsProperty, getSettingsProperty }}
 		>
 			<ThemeProvider
 				theme={systemTheme}

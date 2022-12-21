@@ -28,6 +28,21 @@
 				}
 			}
 		]
-		}
+		},
+		{
+			"header": "",
+			"properties":
+			[
+				{
+					"id": "code",
+					"header": "",
+					"description": "",
+					"defaultValue": "",
+					"specializedProp": {
+						"type": "string"
+					}
+				}
+			]
+			}
 	]
 }

@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import MarkdownEditor from './MarkdownEditor/MarkdownEditor';
 import PdfExportView from './PdfExportView';
 import FileStatus from './FileStatus';
+import { useSettings } from './Settings/SettingsProvicer';
 
 export default function RootComponent() {
+	const settings = useSettings();
 	const [code, setCode] = useState('');
 	const [defaultView, setDefaultView] = useState(true);
 	const [path, setPath] = useState('');
@@ -12,9 +14,17 @@ export default function RootComponent() {
 		new Map<string, [string, FileStatus]>()
 	);
 
+
 	const onCodeChange = React.useCallback((value: string) => {
 		setCode(value);
+		settings?.setSettingsProperty('code', value);
 	}, []);
+
+	useEffect(() => {
+		const value = settings?.getSettingsProperty('code');
+		if(value !== undefined)
+			setCode(value);
+	}, [settings]);
 
 	// create code files content
 	// eslint-disable-next-line react-hooks/exhaustive-deps

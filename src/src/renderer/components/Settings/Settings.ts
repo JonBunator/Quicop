@@ -28,15 +28,26 @@ export interface NumberInput {
 	maxValue: number;
 }
 
+export interface StringInput {
+	type: 'stringInput';
+}
+
 export const settingsData: Settings = JSON.parse(
 	JSON.stringify(data),
 	(key, value) => {
-		if (key === 'specializedProp' && value.type === 'enum') {
-			return value as Enum;
+		if (key === 'specializedProp') {
+			if (value.type === 'enum') {
+				return value as Enum;
+			}
+			if (value.type === 'numberInput') {
+				return value as NumberInput;
+			}
+
+			if (value.type === 'stringInput') {
+				return value as StringInput;
+			}
 		}
-		if (key === 'specializedProp' && value.type === 'numberInput') {
-			return value as NumberInput;
-		}
+
 		return value;
 	}
 );
