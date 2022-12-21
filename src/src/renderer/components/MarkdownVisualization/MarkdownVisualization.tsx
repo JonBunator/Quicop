@@ -37,7 +37,7 @@ export default function MarkdownVisualization(
 	});
 
 	function getCode(key: string) {
-		let error = `\`\`\`bash\nFile "${key}" is not cached. Click refresh!\n\`\`\``;
+		let error = `\`\`\`bash\nFile "${key}" is not cached. Press F5 to refresh!\n\`\`\``;
 		const { codeFiles } = props;
 		if (codeFiles.has(key)) {
 			// get file extension

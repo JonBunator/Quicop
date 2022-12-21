@@ -279,7 +279,7 @@ export default class MenuBuilder {
 				submenu: [
 					{
 						label: '&Refresh code files',
-						accelerator: 'Ctrl+s',
+						accelerator: 'F5',
 						click: () => {
 							this.functions.refreshCodeFiles();
 						},

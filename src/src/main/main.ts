@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, globalShortcut } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -133,6 +133,17 @@ app.whenReady()
 		});
 	})
 	.catch(console.log);
+
+app.on('browser-window-focus', () => {
+	globalShortcut.register('F5', () => {
+		functions?.refreshCodeFiles();
+	});
+});
+
+// this is required because F5 is normally a reserved as an app refresh shortcut.
+app.on('browser-window-blur', () => {
+	globalShortcut.unregister('F5');
+});
 
 // ipc functions
 //------------------------------------------------------------------------------
