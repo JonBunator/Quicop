@@ -36,24 +36,6 @@ export default function SettingsProvider(props: Props) {
 	const { children } = props;
 	const [settings, setSettings] = useState(getDefaultValues());
 
-	// change internal settings
-	function setSettingsProp(id: string, value: string) {
-		if (settings.get(id) !== value) {
-			setSettings((prev) => new Map<string, string>(prev.set(id, value)));
-		}
-	}
-
-	// load settings from saved config
-	useEffect(() => {
-		settings.forEach(async (value, id) => {
-			const savedValue = await window.electronAPI.getSettingsProperty(id);
-			if (savedValue !== value) {
-				setSettingsProp(id, savedValue);
-			}
-		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
 	// gets the setting with the specified id
 	function getSettingsProperty(id: string): string {
 		if (settings.has(id)) {
@@ -66,10 +48,21 @@ export default function SettingsProvider(props: Props) {
 	function setSettingsProperty(id: string, value: string) {
 		if (value === undefined || value === null) return;
 		if (settings.get(id) !== value) {
-			setSettingsProp(id, value);
-			window.electronAPI.setSettingsProperty(id, value);
+			setSettings((prev) => new Map<string, string>(prev.set(id, value)));
 		}
 	}
+
+	// load settings from saved config
+	useEffect(() => {
+		settings.forEach(async (value, id) => {
+			const oldValue =
+				(await window.electronAPI.getSettingsProperty(id)) ?? '';
+			if (oldValue !== value) {
+				window.electronAPI.setSettingsProperty(id, value);
+			}
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [settings]);
 
 	return (
 		<SettingsContext.Provider
