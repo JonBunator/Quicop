@@ -30,6 +30,66 @@
 		]
 		},
 		{
+			"header": "PDF-Export",
+			"properties":
+			[
+				{
+					"id": "default-file-name",
+					"header": "Default Filename",
+					"description": "Set the default filename of the exported pdf file.",
+					"defaultValue": "code_files.pdf",
+					"specializedProp": {
+						"type": "stringInput"
+					}
+				},
+
+				{
+					"id": "top-margin",
+					"header": "Top Margin",
+					"description": "Set the top margin of the exported pdf file in centimeters.",
+					"defaultValue": "1.5",
+					"specializedProp": {
+						"type": "numberInput",
+						"minValue": 0,
+						"maxValue": 10
+					}
+				},
+				{
+					"id": "bottom-margin",
+					"header": "Default Filename",
+					"description": "Set the bottom margin of the exported pdf file in centimeters.",
+					"defaultValue": "2.5",
+					"specializedProp": {
+						"type": "numberInput",
+						"minValue": 0,
+						"maxValue": 10
+					}
+				},
+				{
+					"id": "left-margin",
+					"header": "Default Filename",
+					"description": "Set the left margin of the exported pdf file in centimeters.",
+					"defaultValue": "2",
+					"specializedProp": {
+						"type": "numberInput",
+						"minValue": 0,
+						"maxValue": 10
+					}
+				},
+				{
+					"id": "right-margin",
+					"header": "Default Filename",
+					"description": "Set the right margin of the exported pdf file in centimeters.",
+					"defaultValue": "2",
+					"specializedProp": {
+						"type": "numberInput",
+						"minValue": 0,
+						"maxValue": 10
+					}
+				}
+			]
+			},
+		{
 			"header": "",
 			"properties":
 			[

@@ -87,6 +87,11 @@ export const editorThemeDark = createTheme({
 });
 
 export const GlobalStyle = createGlobalStyle`
+	body {
+		background-color: ${themeGet('colors.canvas.default')};
+		height: 100%;
+	}
+
 	.gutter.gutter-horizontal {
 		background: linear-gradient(
 			${themeGet('colors.border.default')},

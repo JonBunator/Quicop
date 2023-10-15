@@ -148,8 +148,8 @@ app.on('browser-window-blur', () => {
 // ipc functions
 //------------------------------------------------------------------------------
 // export pdf
-ipcMain.on('exportPDF', (_event, args) => {
-	functions?.exportPDF(args);
+ipcMain.on('exportPDF', (_event, pathToPdf) => {
+	functions?.exportPDF(pathToPdf);
 });
 
 // open file

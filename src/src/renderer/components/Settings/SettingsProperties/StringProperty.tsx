@@ -32,6 +32,12 @@ export default function StringProperty(props: StringPropertyProps) {
 	};
 
 	useEffect(() => {
+		// checks if the value is an empty string
+		function checkEmpty(valueToCheck: string): boolean {
+			if (valueToCheck === undefined) return false;
+			return valueToCheck.length > 0;
+		}
+
 		// checks if the value has the correct type
 		function checkType(valueToCheck: string): boolean {
 			if (type === 'string') return true;
@@ -67,7 +73,9 @@ export default function StringProperty(props: StringPropertyProps) {
 			return true;
 		}
 
-		if (!checkType(value)) {
+		if (!checkEmpty(value)) {
+			setValidationResult('empty');
+		} else if (!checkType(value)) {
 			setValidationResult('wrongType');
 		} else if (!checkRange(value)) {
 			setValidationResult('outOfRange');
@@ -86,29 +94,44 @@ export default function StringProperty(props: StringPropertyProps) {
 						onChange={handleInputChange}
 						defaultValue={defaultValue}
 						placeholder={header}
-						aria-describedby="custom-id"
+						aria-describedby="string-input"
 						aria-invalid={
+							validationResult === 'empty' ||
 							validationResult === 'wrongType' ||
 							validationResult === 'outOfRange'
 						}
 					/>
+					{validationResult === 'empty' && (
+						<FormControl.Validation
+							id="string-input"
+							variant="error"
+						>
+							Value can't be empty!
+						</FormControl.Validation>
+					)}
 					{validationResult === 'wrongType' && (
-						<FormControl.Validation id="custom-id" variant="error">
+						<FormControl.Validation
+							id="string-input"
+							variant="error"
+						>
 							Wrong type. Input should be of type {type}!
 						</FormControl.Validation>
 					)}
 					{validationResult === 'outOfRange' && (
-						<FormControl.Validation id="custom-id" variant="error">
+						<FormControl.Validation
+							id="string-input"
+							variant="error"
+						>
 							Value is out of range. Must be between {minValue}{' '}
 							and {maxValue}!
 						</FormControl.Validation>
 					)}
 					{validationResult === 'validName' && (
 						<FormControl.Validation
-							id="custom-id"
+							id="string-input"
 							variant="success"
 						>
-							Valid name
+							Valid value
 						</FormControl.Validation>
 					)}
 				</FormControl>

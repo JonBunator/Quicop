@@ -64,6 +64,7 @@ export default function SettingsProvider(props: Props) {
 
 	// sets the value of the setting with the specified id
 	function setSettingsProperty(id: string, value: string) {
+		if (value === undefined || value === null) return;
 		if (settings.get(id) !== value) {
 			setSettingsProp(id, value);
 			window.electronAPI.setSettingsProperty(id, value);

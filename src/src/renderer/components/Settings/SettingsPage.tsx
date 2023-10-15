@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { Button, Box, Text, themeGet } from '@primer/react';
-import './SettingsPage.scss';
 import styled from 'styled-components';
 import EnumProperty from './SettingsProperties/EnumProperty';
 import { useSettings } from './SettingsProvider';
+import StringProperty from './SettingsProperties/StringProperty';
 
 const SettingsPagePanel = styled.div`
 	background-color: ${themeGet('colors.canvas.default')};
+	margin-bottom: 32px;
 `;
 
 export default function SettingsPage() {
@@ -22,7 +23,7 @@ export default function SettingsPage() {
 	};
 
 	return (
-		<SettingsPagePanel className="q-settings-page">
+		<SettingsPagePanel>
 			<Box marginX="clamp(15px, 5%, 100px);">
 				<Box
 					display="flex"
@@ -59,9 +60,81 @@ export default function SettingsPage() {
 						}
 						onValueChange={propertyChanged}
 					/>
-					<Text color="fg.default" fontSize="1rem">
-						More settings coming soonish..
+					<Text color="fg.default" fontSize="1.5rem">
+						PDF-Export
 					</Text>
+					<StringProperty
+						id="default-file-name"
+						header="Default Filename"
+						description="Sets the default filename of the exported pdf file."
+						type="string"
+						defaultValue={
+							settings?.getSettingsProperty(
+								'default-file-name'
+							) as string
+						}
+						onValueChange={propertyChanged}
+					/>
+
+					<StringProperty
+						id="top-margin"
+						header="Top Margin"
+						description="Sets the top margin of the exported pdf file in centimeters."
+						type="double"
+						minValue={0}
+						maxValue={10}
+						defaultValue={
+							settings?.getSettingsProperty(
+								'top-margin'
+							) as string
+						}
+						onValueChange={propertyChanged}
+					/>
+
+					<StringProperty
+						id="bottom-margin"
+						header="Bottom Margin"
+						description="Sets the bottom margin of the exported pdf file in centimeters."
+						type="double"
+						minValue={0}
+						maxValue={10}
+						defaultValue={
+							settings?.getSettingsProperty(
+								'bottom-margin'
+							) as string
+						}
+						onValueChange={propertyChanged}
+					/>
+
+					<StringProperty
+						id="left-margin"
+						header="Left Margin"
+						description="Sets the left margin of the exported pdf file in centimeters."
+						type="double"
+						minValue={0}
+						maxValue={10}
+						defaultValue={
+							settings?.getSettingsProperty(
+								'left-margin'
+							) as string
+						}
+						onValueChange={propertyChanged}
+					/>
+
+					<StringProperty
+						id="right-margin"
+						header="Right Margin"
+						description="Sets the right margin of the exported pdf file in centimeters."
+						type="double"
+						minValue={0}
+						maxValue={10}
+						defaultValue={
+							settings?.getSettingsProperty(
+								'right-margin'
+							) as string
+						}
+						onValueChange={propertyChanged}
+					/>
 					{/*
 					<BooleanProperty
 						id="auto-updates"
