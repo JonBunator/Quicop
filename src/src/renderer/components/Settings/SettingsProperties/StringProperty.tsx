@@ -9,6 +9,8 @@ export interface StringPropertyProps extends CommonSettingsProperties {
 	minValue?: number;
 	// eslint-disable-next-line react/require-default-props
 	maxValue?: number;
+	// eslint-disable-next-line react/require-default-props
+	canBeEmpty?: boolean;
 }
 
 export default function StringProperty(props: StringPropertyProps) {
@@ -21,8 +23,9 @@ export default function StringProperty(props: StringPropertyProps) {
 		onValueChange,
 		minValue,
 		maxValue,
+		canBeEmpty = false,
 	} = props;
-	const [validationResult, setValidationResult] = useState('validName');
+	const [validationResult, setValidationResult] = useState('validValue');
 	const [value, setValue] = useState(defaultValue);
 
 	const handleInputChange = (e: {
@@ -73,7 +76,7 @@ export default function StringProperty(props: StringPropertyProps) {
 			return true;
 		}
 
-		if (!checkEmpty(value)) {
+		if (!canBeEmpty && !checkEmpty(value)) {
 			setValidationResult('empty');
 		} else if (!checkType(value)) {
 			setValidationResult('wrongType');
@@ -83,7 +86,7 @@ export default function StringProperty(props: StringPropertyProps) {
 			setValidationResult('validValue');
 			if (onValueChange !== undefined) onValueChange(id, value);
 		}
-	}, [id, maxValue, minValue, type, value, onValueChange]);
+	}, [id, maxValue, minValue, type, value, canBeEmpty, onValueChange]);
 
 	return (
 		<SettingsProperty header={header} description={description}>
@@ -93,6 +96,7 @@ export default function StringProperty(props: StringPropertyProps) {
 					<TextInput
 						onChange={handleInputChange}
 						defaultValue={defaultValue}
+						sx={type === 'string' ? { width: '100%' } : {}}
 						placeholder={header}
 						aria-describedby="string-input"
 						aria-invalid={
@@ -124,14 +128,6 @@ export default function StringProperty(props: StringPropertyProps) {
 						>
 							Value is out of range. Must be between {minValue}{' '}
 							and {maxValue}!
-						</FormControl.Validation>
-					)}
-					{validationResult === 'validName' && (
-						<FormControl.Validation
-							id="string-input"
-							variant="success"
-						>
-							Valid value
 						</FormControl.Validation>
 					)}
 				</FormControl>

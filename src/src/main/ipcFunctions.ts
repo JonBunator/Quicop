@@ -59,6 +59,36 @@ export default class IpcFunctions {
 			this.getSettingsProperty('right-margin') ?? 2
 		);
 
+		// creates footer or header template from formatted string
+		function createFooterHeaderTemplate(
+			isFooterTemplate: boolean,
+			value: string
+		) {
+			const output = `<span style="font-size:10rem; margin-left:auto; margin-right:auto; ${
+				isFooterTemplate ? 'margin-bottom' : 'margin-top'
+			}:20px;">`;
+
+			const injectedValues = ['date', 'pageNumber', 'totalPages'];
+			let valueProcessed = value;
+			for (let i = 0; i < injectedValues.length; i += 1) {
+				valueProcessed = valueProcessed.replace(
+					`{${injectedValues[i]}}`,
+					`<span style="font-size:10rem; margin-left:auto; margin-right:auto; margin-bottom:20px;" class="${injectedValues[i]}"></span>`
+				);
+			}
+			return `${output}${valueProcessed}</span>`;
+		}
+
+		const footerTemplate = createFooterHeaderTemplate(
+			true,
+			this.getSettingsProperty('footer-template') ?? ''
+		);
+
+		const headerTemplate = createFooterHeaderTemplate(
+			false,
+			this.getSettingsProperty('header-template') ?? ''
+		);
+
 		let pdfPath = pathToPdf;
 		if (pathToPdf === '')
 			pdfPath = path.join(os.homedir(), 'Downloads', defaultFileName);
@@ -66,9 +96,8 @@ export default class IpcFunctions {
 			.printToPDF({
 				printBackground: true,
 				pageSize: 'A4',
-				footerTemplate:
-					'<span style="font-size:10rem; margin-left:auto; margin-right:auto; margin-bottom:20px;" class="pageNumber"></span>',
-				headerTemplate: ' ',
+				footerTemplate,
+				headerTemplate,
 				displayHeaderFooter: true,
 				preferCSSPageSize: true,
 				margins: {

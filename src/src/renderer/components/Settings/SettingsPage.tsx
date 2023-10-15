@@ -135,6 +135,33 @@ export default function SettingsPage() {
 						}
 						onValueChange={propertyChanged}
 					/>
+
+					<StringProperty
+						id="footer-template"
+						header="Footer Template"
+						description="Template for the footer. Allows the following values to be injected: pageNumber (Current page number), totalPages (Total number of pages), date (Current date). They should be formatted like this {pageNumber}."
+						type="string"
+						defaultValue={
+							settings?.getSettingsProperty(
+								'footer-template'
+							) as string
+						}
+						onValueChange={propertyChanged}
+					/>
+
+					<StringProperty
+						id="header-template"
+						header="Header Template"
+						description="Template for the header. Supports the same format as the footer template."
+						type="string"
+						canBeEmpty
+						defaultValue={
+							settings?.getSettingsProperty(
+								'header-template'
+							) as string
+						}
+						onValueChange={propertyChanged}
+					/>
 					{/*
 					<BooleanProperty
 						id="auto-updates"
