@@ -14,7 +14,7 @@ export interface Property {
 	header: string;
 	description: string;
 	defaultValue: string;
-	specializedProp: Enum | NumberInput;
+	specializedProp: Enum | NumberInput | StringInput;
 }
 
 export interface Enum {

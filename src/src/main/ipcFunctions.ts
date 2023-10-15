@@ -41,17 +41,71 @@ export default class IpcFunctions {
 
 	// export pdf
 	exportPDF(pathToPdf: string) {
+		// converts centimeters to inches
+		function convertCMToInch(value: number) {
+			return value * 0.393701;
+		}
+		let defaultFileName =
+			this.getSettingsProperty('default-file-name') ?? 'code_files.pdf';
+		if (!defaultFileName.endsWith('.pdf')) {
+			defaultFileName += '.pdf';
+		}
+		const topMargin = Number(this.getSettingsProperty('top-margin') ?? 1.5);
+		const bottomMargin = Number(
+			this.getSettingsProperty('bottom-margin') ?? 2.5
+		);
+		const leftMargin = Number(this.getSettingsProperty('left-margin') ?? 2);
+		const rightMargin = Number(
+			this.getSettingsProperty('right-margin') ?? 2
+		);
+
+		// creates footer or header template from formatted string
+		function createFooterHeaderTemplate(
+			isFooterTemplate: boolean,
+			value: string
+		) {
+			const output = `<span style="font-size:10rem; margin-left:auto; margin-right:auto; ${
+				isFooterTemplate ? 'margin-bottom' : 'margin-top'
+			}:20px;">`;
+
+			const injectedValues = ['date', 'pageNumber', 'totalPages'];
+			let valueProcessed = value;
+			for (let i = 0; i < injectedValues.length; i += 1) {
+				valueProcessed = valueProcessed.replace(
+					`{${injectedValues[i]}}`,
+					`<span style="font-size:10rem; margin-left:auto; margin-right:auto; margin-bottom:20px;" class="${injectedValues[i]}"></span>`
+				);
+			}
+			return `${output}${valueProcessed}</span>`;
+		}
+
+		const footerTemplate = createFooterHeaderTemplate(
+			true,
+			this.getSettingsProperty('footer-template') ?? ''
+		);
+
+		const headerTemplate = createFooterHeaderTemplate(
+			false,
+			this.getSettingsProperty('header-template') ?? ''
+		);
+
 		let pdfPath = pathToPdf;
 		if (pathToPdf === '')
-			pdfPath = path.join(os.homedir(), 'Downloads', 'code_files.pdf');
+			pdfPath = path.join(os.homedir(), 'Downloads', defaultFileName);
 		this.mainWindow?.webContents
 			.printToPDF({
 				printBackground: true,
 				pageSize: 'A4',
-				footerTemplate:
-					'<div><span style="font-size:10rem; margin-left:290px;" class="pageNumber"></span></div>',
-				headerTemplate: ' ',
+				footerTemplate,
+				headerTemplate,
 				displayHeaderFooter: true,
+				preferCSSPageSize: true,
+				margins: {
+					top: convertCMToInch(topMargin),
+					bottom: convertCMToInch(bottomMargin),
+					left: convertCMToInch(leftMargin),
+					right: convertCMToInch(rightMargin),
+				},
 			})
 			.then((data) => {
 				fs.writeFile(pdfPath, data, (error) => {
