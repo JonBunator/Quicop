@@ -1,6 +1,7 @@
 import { marked } from 'marked';
 import hljs from 'highlight.js';
 import './MarkdownVisualization.scss';
+import { useEffect, useState } from 'react';
 import FileStatus from '../FileStatus';
 
 export interface MarkdownVisualizationProps {
@@ -12,6 +13,9 @@ export interface MarkdownVisualizationProps {
 export default function MarkdownVisualization(
 	props: MarkdownVisualizationProps
 ) {
+	const [markup, setMarkup] = useState({ __html: '' });
+	const { code } = props;
+
 	// eslint-disable-next-line @typescript-eslint/no-shadow
 	function highlightCode(code: string, lang: string) {
 		if (lang && hljs.getLanguage(lang)) {
@@ -60,9 +64,10 @@ export default function MarkdownVisualization(
 		}
 		return marked.parse(error);
 	}
+	const delay = (ms: number) =>
+		new Promise((resolve) => setTimeout(resolve, ms));
 
-	function parseSpecialMarkdown() {
-		const { code } = props;
+	async function parseSpecialMarkdown() {
 		const regex = /!CodeFile\["(.*)"\]/g;
 		let compiledCode = '';
 		let match;
@@ -78,9 +83,14 @@ export default function MarkdownVisualization(
 		return compiledCode;
 	}
 
-	function createMarkup() {
-		return { __html: parseSpecialMarkdown() };
-	}
+	useEffect(() => {
+		const getData = setTimeout(async () => {
+			const parsedValue = await parseSpecialMarkdown();
+			setMarkup({ __html: parsedValue });
+		}, 50);
+		return () => clearTimeout(getData);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [code]);
 
 	function isDarkTheme() {
 		const { dark } = props;
@@ -91,7 +101,7 @@ export default function MarkdownVisualization(
 		<div
 			className={`q-markdown-visualization${isDarkTheme()}`}
 			// eslint-disable-next-line react/no-danger
-			dangerouslySetInnerHTML={createMarkup()}
+			dangerouslySetInnerHTML={markup}
 		/>
 	);
 }

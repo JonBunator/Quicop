@@ -14,16 +14,15 @@ export default function RootComponent() {
 		new Map<string, [string, FileStatus]>()
 	);
 
-
 	const onCodeChange = React.useCallback((value: string) => {
 		setCode(value);
 		settings?.setSettingsProperty('code', value);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
 		const value = settings?.getSettingsProperty('code');
-		if(value !== undefined)
-			setCode(value);
+		if (value !== undefined) setCode(value);
 	}, [settings]);
 
 	// create code files content
@@ -85,7 +84,8 @@ export default function RootComponent() {
 		return () => {
 			window.electronAPI.removeAllImportCodeFileFolderListeners();
 		};
-	}, [code, createCodeFilesContent]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [code]);
 
 	useEffect(() => {
 		window.electronAPI.onImportCodeFile(async () => {
@@ -103,7 +103,8 @@ export default function RootComponent() {
 		return () => {
 			window.electronAPI.removeAllImportCodeFileListeners();
 		};
-	}, [code, createCodeFilesContent]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [code]);
 
 	// refresh code files
 	useEffect(() => {
@@ -113,7 +114,8 @@ export default function RootComponent() {
 		return () => {
 			window.electronAPI.removeAllRefreshCodeFilesListeners();
 		};
-	}, [code, createCodeFilesContent]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [code]);
 
 	useEffect(() => {
 		// pdf export with path started

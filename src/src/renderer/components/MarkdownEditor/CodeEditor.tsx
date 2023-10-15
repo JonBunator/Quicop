@@ -5,6 +5,7 @@ import { MarkdownConfig } from '@lezer/markdown';
 import { styleTags, tags } from '@lezer/highlight';
 import { useTheme } from '@primer/react';
 import { editorThemeDark, editorThemeLight } from 'renderer/components/Theme';
+import { useMemo } from 'react';
 
 export interface CodeEditorProps {
 	code: string;
@@ -70,16 +71,21 @@ export default function CodeEditor(props: CodeEditorProps) {
 	const { code, onChange, className } = props;
 	// can be light or dark
 	const themeMode = useTheme().resolvedColorMode;
+
+	const editorExtensions = useMemo(() => {
+		return [
+			markdown({
+				base: markdownLanguage,
+				codeLanguages: languages,
+				extensions: [MarkCodeFiles, MarkPaths],
+			}),
+		];
+	}, []);
+
 	return (
 		<CodeMirror
 			className={`q-code-editor ${className}`}
-			extensions={[
-				markdown({
-					base: markdownLanguage,
-					codeLanguages: languages,
-					extensions: [MarkCodeFiles, MarkPaths],
-				}),
-			]}
+			extensions={editorExtensions}
 			height="100%"
 			value={code}
 			theme={themeMode === 'night' ? editorThemeDark : editorThemeLight}
