@@ -1,19 +1,22 @@
 import { useEffect } from 'react';
-import FileStatus from './FileStatus';
 import MarkdownVisualization from './MarkdownVisualization/MarkdownVisualization';
+import { useMarkdownParser } from './MarkdownVisualization/MarkdownParserProvider';
 
 export interface PdfExportViewProps {
-	code: string;
 	path: string;
-	codeFiles: Map<string, [string, FileStatus]>;
 }
 
 export default function PdfExportView(props: PdfExportViewProps) {
-	const { code, path, codeFiles } = props;
+	const { path } = props;
+	const markdownParser = useMarkdownParser();
+
 	useEffect(() => {
 		window.electronAPI.exportPDF(path);
 	}, [path]);
 	return (
-		<MarkdownVisualization code={code} codeFiles={codeFiles} dark={false} />
+		<MarkdownVisualization
+			markdownParsed={markdownParser?.markdownParsed ?? ''}
+			dark={false}
+		/>
 	);
 }
