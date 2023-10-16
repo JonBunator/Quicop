@@ -1,5 +1,6 @@
 enum FileStatus {
 	Success,
+	Loading,
 	PathNotFoundError,
 	BinaryFileError,
 }
