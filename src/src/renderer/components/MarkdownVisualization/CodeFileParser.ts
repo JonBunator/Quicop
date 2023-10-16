@@ -56,18 +56,21 @@ export default async function parseMarkdown(
 		highlight: highlightCode,
 		breaks: true,
 	});
-
+	// Add break lines for empty lines
+	const markdownNew = markdown.replace(/\n+/g, (match) => {
+		return match.length === 1 ? '\n' : '<br></br>'.repeat(match.length - 1);
+	});
 	const regex = /!CodeFile\["(.*)"\]/g;
 	let compiledCode = '';
 	let match;
 	let start = 0;
 	// eslint-disable-next-line no-cond-assign
-	while ((match = regex.exec(markdown)) != null) {
+	while ((match = regex.exec(markdownNew)) != null) {
 		const path: string = match[1];
-		compiledCode += marked.parse(markdown.substring(start, match.index));
+		compiledCode += marked.parse(markdownNew.substring(start, match.index));
 		compiledCode += getCode(path, codeFiles);
 		start = regex.lastIndex;
 	}
-	compiledCode += marked.parse(markdown.substring(start));
+	compiledCode += marked.parse(markdownNew.substring(start));
 	return compiledCode;
 }
