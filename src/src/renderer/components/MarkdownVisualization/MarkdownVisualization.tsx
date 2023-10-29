@@ -2,6 +2,7 @@ import hash from 'renderer/helper/HelperFunctions';
 import { CodeType } from './CodeFileParser';
 import CodePortionVisualizer from './CodePortionVisualizer';
 import './MarkdownVisualization.scss';
+import MathJaxRenderer from './MathJax/MathJaxRenderer';
 
 export interface MarkdownVisualizationProps {
 	markdownParsed: [CodeType, string][];
@@ -22,7 +23,12 @@ export default function MarkdownVisualization(
 		<div className={`q-markdown-visualization${isDarkTheme()}`}>
 			{markdownParsed.map(
 				(item: [CodeType, string]) =>
-					(item[0] === CodeType.MathJax && <div />) || (
+					(item[0] === CodeType.MathJax && (
+						<MathJaxRenderer
+							key={hash(item[1])}
+							expression={item[1]}
+						/>
+					)) || (
 						<CodePortionVisualizer
 							key={hash(item[1])}
 							code={item[1]}
