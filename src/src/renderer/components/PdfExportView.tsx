@@ -15,7 +15,7 @@ export default function PdfExportView(props: PdfExportViewProps) {
 	}, [path]);
 	return (
 		<MarkdownVisualization
-			markdownParsed={markdownParser?.markdownParsed ?? ''}
+			markdownParsed={markdownParser?.markdownParsed ?? []}
 			dark={false}
 		/>
 	);

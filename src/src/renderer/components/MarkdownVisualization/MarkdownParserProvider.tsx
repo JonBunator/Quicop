@@ -5,7 +5,7 @@ import {
 	useEffect,
 	useState,
 } from 'react';
-import parseMarkdown from './CodeFileParser';
+import parseMarkdown, { CodeType } from './CodeFileParser';
 import FileStatus from '../FileStatus';
 import { useSettings } from '../Settings/SettingsProvider';
 
@@ -15,7 +15,8 @@ const MarkdownParserContext = createContext<MarkdownParserProps | undefined>(
 
 interface MarkdownParserProps {
 	markdown: string;
-	markdownParsed: string;
+	// list of portions of markdown that have been parsed
+	markdownParsed: [CodeType, string][];
 	setMarkdown: (value: string) => void;
 }
 
@@ -25,7 +26,9 @@ export type Props = {
 
 export default function MarkdownParserProvider(props: Props) {
 	const [markdown, setMarkdown] = useState('');
-	const [markdownParsed, setMarkdownParsed] = useState('');
+	const [markdownParsed, setMarkdownParsed] = useState<[CodeType, string][]>(
+		[]
+	);
 	const [codeFiles, setCodeFiles] = useState<
 		Map<string, [string, FileStatus]>
 	>(new Map());

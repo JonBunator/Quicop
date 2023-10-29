@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import MarkdownEditor from './MarkdownEditor/MarkdownEditor';
 import MarkdownParserProvider from './MarkdownVisualization/MarkdownParserProvider';
 import PdfExportView from './PdfExportView';
+import MathJaxProvider from './MarkdownVisualization/MathJax/MathJaxProvider';
 
 export default function RootComponent() {
 	const [defaultView, setDefaultView] = useState(true);
@@ -46,8 +47,10 @@ export default function RootComponent() {
 
 	return (
 		<MarkdownParserProvider>
-			{defaultView && <MarkdownEditor />}
-			{!defaultView && <PdfExportView path={path} />}
+			<MathJaxProvider>
+				{defaultView && <MarkdownEditor />}
+				{!defaultView && <PdfExportView path={path} />}
+			</MathJaxProvider>
 		</MarkdownParserProvider>
 	);
 }

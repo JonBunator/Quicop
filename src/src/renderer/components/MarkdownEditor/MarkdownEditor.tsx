@@ -31,7 +31,7 @@ export default function MarkdownEditor() {
 			/>
 			<MarkdownPanel className="q-markdown-panel">
 				<MarkdownVisualization
-					markdownParsed={markdownParser?.markdownParsed ?? ''}
+					markdownParsed={markdownParser?.markdownParsed ?? []}
 					dark={themeMode === 'night'}
 				/>
 			</MarkdownPanel>

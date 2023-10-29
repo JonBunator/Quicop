@@ -21,8 +21,9 @@ const MarkPaths: MarkdownConfig = {
 	defineNodes: ['Path', 'PathMark'],
 	parseInline: [
 		{
-			name: 'Highlight',
+			name: 'Path',
 			parse(cx, next, pos) {
+				// 34 is ascii code for "
 				if (next !== 34) return -1;
 				return cx.addDelimiter(PathsDelim, pos, pos + 1, true, true);
 			},
@@ -33,6 +34,30 @@ const MarkPaths: MarkdownConfig = {
 		styleTags({
 			PathMark: tags.literal,
 			Path: tags.string,
+		}),
+	],
+};
+
+const MathJaxDelim = { resolve: 'MathJax', mark: 'MathJaxMark' };
+
+// highlights MathJax $x = {-b \pm \sqrt{b^2-4ac} \over 2a}$
+const MarkMathJax: MarkdownConfig = {
+	defineNodes: ['MathJax', 'MathJaxMark'],
+	parseInline: [
+		{
+			name: 'MathJax',
+			parse(cx, next, pos) {
+				// 36 is ascii code for $
+				if (next !== 36) return -1;
+				return cx.addDelimiter(MathJaxDelim, pos, pos + 1, true, true);
+			},
+			after: 'Emphasis',
+		},
+	],
+	props: [
+		styleTags({
+			MathJax: tags.string,
+			MathJaxMark: tags.keyword,
 		}),
 	],
 };
@@ -77,7 +102,7 @@ export default function CodeEditor(props: CodeEditorProps) {
 			markdown({
 				base: markdownLanguage,
 				codeLanguages: languages,
-				extensions: [MarkCodeFiles, MarkPaths],
+				extensions: [MarkCodeFiles, MarkPaths, MarkMathJax],
 			}),
 		];
 	}, []);
