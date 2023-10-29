@@ -3,6 +3,12 @@ import hljs from 'highlight.js';
 import './MarkdownVisualization.scss';
 import FileStatus from '../FileStatus';
 
+export enum CodeType {
+	Markdown,
+	MathJax,
+	Code,
+}
+
 // eslint-disable-next-line @typescript-eslint/no-shadow
 function highlightCode(code: string, lang: string) {
 	if (lang && hljs.getLanguage(lang)) {
@@ -50,27 +56,69 @@ function getCode(key: string, codeFiles: Map<string, [string, FileStatus]>) {
 export default async function parseMarkdown(
 	markdown: string,
 	codeFiles: Map<string, [string, FileStatus]>
-) {
+): Promise<[CodeType, string][]> {
 	marked.setOptions({
 		langPrefix: 'hljs language-',
 		highlight: highlightCode,
 		breaks: true,
 	});
-	// Add break lines for empty lines
-	const markdownNew = markdown.replace(/\n+/g, (match) => {
-		return match.length === 1 ? '\n' : '<br></br>'.repeat(match.length - 1);
-	});
+
+	const compiledCode: [CodeType, string][] = [];
+
+	// adds a value to the compiledCode list
+	function addValue(type: CodeType, value: string) {
+		if (value === '') return;
+		compiledCode.push([type, value]);
+	}
+
+	// adds mathjax to the compiledCode list
+	function addMathJax(value: string) {
+		addValue(CodeType.MathJax, value);
+	}
+
+	// adds code to the compiledCode list
+	function addCode(value: string) {
+		addValue(CodeType.Code, value);
+	}
+
+	// extract MathJax and markdown to compiledCode list
+	function addMarkdown(value: string) {
+		// Add break lines for empty lines
+		const cleanedValue = value.replace(/\n+/g, (match) => {
+			return match.length === 1
+				? '\n'
+				: '<br></br>'.repeat(match.length - 1);
+		});
+
+		const regex = /\$(.*)\$/g;
+		let match;
+		let start = 0;
+		// eslint-disable-next-line no-cond-assign
+		while ((match = regex.exec(cleanedValue)) != null) {
+			const mathJax: string = match[1];
+			addValue(
+				CodeType.Markdown,
+				marked.parse(cleanedValue.substring(start, match.index))
+			);
+			addMathJax(mathJax);
+			start = regex.lastIndex;
+		}
+		addValue(
+			CodeType.Markdown,
+			marked.parse(cleanedValue.substring(start))
+		);
+	}
+
 	const regex = /!CodeFile\["(.*)"\]/g;
-	let compiledCode = '';
 	let match;
 	let start = 0;
 	// eslint-disable-next-line no-cond-assign
-	while ((match = regex.exec(markdownNew)) != null) {
+	while ((match = regex.exec(markdown)) != null) {
 		const path: string = match[1];
-		compiledCode += marked.parse(markdownNew.substring(start, match.index));
-		compiledCode += getCode(path, codeFiles);
+		addMarkdown(markdown.substring(start, match.index));
+		addCode(getCode(path, codeFiles));
 		start = regex.lastIndex;
 	}
-	compiledCode += marked.parse(markdownNew.substring(start));
+	addMarkdown(markdown.substring(start));
 	return compiledCode;
 }
