@@ -22,38 +22,31 @@ export default function SettingsPage() {
 		settings?.setSettingsProperty(id, value);
 	};
 
-	// header content
-	function Header() {
-		return (
-			<Box
-				display="flex"
-				alignItems="flex-end"
-				borderColor="border.default"
-				borderBottomWidth={1}
-				borderBottomStyle="solid"
-				position="sticky"
-				top={0}
-				pt={5}
-				px={2}
-				pb={3}
-				mb={4}
-				backgroundColor="canvas.default"
-				zIndex={1}
-			>
-				<Box color="fg.default" fontSize="1.8rem">
-					Settings
-				</Box>
-				<Box ml="auto">
-					<Button onClick={exitSettingsPage}>Close</Button>
-				</Box>
-			</Box>
-		);
-	}
-
 	return (
 		<SettingsPagePanel>
 			<Box marginX="clamp(15px, 5%, 100px);">
-				<Header />
+				<Box
+					display="flex"
+					alignItems="flex-end"
+					borderColor="border.default"
+					borderBottomWidth={1}
+					borderBottomStyle="solid"
+					position="sticky"
+					top={0}
+					pt={5}
+					px={2}
+					pb={3}
+					mb={4}
+					backgroundColor="canvas.default"
+					zIndex={1}
+				>
+					<Box color="fg.default" fontSize="1.8rem">
+						Settings
+					</Box>
+					<Box ml="auto">
+						<Button onClick={exitSettingsPage}>Close</Button>
+					</Box>
+				</Box>
 				<Box mx={8}>
 					<Text color="fg.default" fontSize="1.5rem">
 						General
@@ -66,7 +59,7 @@ export default function SettingsPage() {
 						displayValues={['Auto', 'Dark', 'Light']}
 						defaultValue={
 							settings?.getSettingsProperty(
-								'color-mode'
+								'color-mode',
 							) as string
 						}
 						onValueChange={propertyChanged}
@@ -81,7 +74,7 @@ export default function SettingsPage() {
 						type="string"
 						defaultValue={
 							settings?.getSettingsProperty(
-								'default-file-name'
+								'default-file-name',
 							) as string
 						}
 						onValueChange={propertyChanged}
@@ -96,7 +89,7 @@ export default function SettingsPage() {
 						maxValue={10}
 						defaultValue={
 							settings?.getSettingsProperty(
-								'top-margin'
+								'top-margin',
 							) as string
 						}
 						onValueChange={propertyChanged}
@@ -111,7 +104,7 @@ export default function SettingsPage() {
 						maxValue={10}
 						defaultValue={
 							settings?.getSettingsProperty(
-								'bottom-margin'
+								'bottom-margin',
 							) as string
 						}
 						onValueChange={propertyChanged}
@@ -126,7 +119,7 @@ export default function SettingsPage() {
 						maxValue={10}
 						defaultValue={
 							settings?.getSettingsProperty(
-								'left-margin'
+								'left-margin',
 							) as string
 						}
 						onValueChange={propertyChanged}
@@ -141,7 +134,7 @@ export default function SettingsPage() {
 						maxValue={10}
 						defaultValue={
 							settings?.getSettingsProperty(
-								'right-margin'
+								'right-margin',
 							) as string
 						}
 						onValueChange={propertyChanged}
@@ -154,7 +147,7 @@ export default function SettingsPage() {
 						type="string"
 						defaultValue={
 							settings?.getSettingsProperty(
-								'footer-template'
+								'footer-template',
 							) as string
 						}
 						onValueChange={propertyChanged}
@@ -168,7 +161,7 @@ export default function SettingsPage() {
 						canBeEmpty
 						defaultValue={
 							settings?.getSettingsProperty(
-								'header-template'
+								'header-template',
 							) as string
 						}
 						onValueChange={propertyChanged}

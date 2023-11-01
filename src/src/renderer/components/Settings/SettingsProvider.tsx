@@ -4,16 +4,17 @@ import {
 	useContext,
 	useState,
 	useEffect,
+	useMemo,
 } from 'react';
 import { settingsData } from './Settings';
-
-const SettingsContext = createContext<SettingsProps | undefined>(undefined);
 
 interface SettingsProps {
 	settings: Map<string, string>;
 	setSettingsProperty: (id: string, value: string) => void;
 	getSettingsProperty: (id: string) => string;
 }
+
+const SettingsContext = createContext<SettingsProps | undefined>(undefined);
 
 export type Props = {
 	children: ReactNode;
@@ -49,25 +50,30 @@ export default function SettingsProvider(props: Props) {
 		if (value === undefined || value === null) return;
 		if (settings.get(id) !== value) {
 			setSettings((prev) => new Map<string, string>(prev.set(id, value)));
+			window.electronAPI.setSettingsProperty(id, value);
 		}
 	}
 
 	// load settings from saved config
 	useEffect(() => {
 		settings.forEach(async (value, id) => {
-			const oldValue =
+			const loadedValue =
 				(await window.electronAPI.getSettingsProperty(id)) ?? '';
-			if (oldValue !== value) {
-				window.electronAPI.setSettingsProperty(id, value);
+			if (loadedValue !== '') {
+				setSettingsProperty(id, loadedValue);
 			}
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [settings]);
+	}, []);
+
+	const memoSettings = useMemo(
+		() => ({ settings, setSettingsProperty, getSettingsProperty }),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[settings],
+	);
 
 	return (
-		<SettingsContext.Provider
-			value={{ settings, setSettingsProperty, getSettingsProperty }}
-		>
+		<SettingsContext.Provider value={memoSettings}>
 			{children}
 		</SettingsContext.Provider>
 	);
