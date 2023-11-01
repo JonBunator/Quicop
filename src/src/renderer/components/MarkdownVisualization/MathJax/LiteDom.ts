@@ -77,7 +77,7 @@ export default function render(nodes: LiteNode[]): React.ReactNode[] {
 		return createElement(
 			node.kind,
 			propsForLiteElement(node, idx),
-			...render(node.children)
+			...render(node.children),
 		);
 	});
 }

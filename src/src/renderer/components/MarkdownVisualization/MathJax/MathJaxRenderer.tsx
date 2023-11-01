@@ -12,8 +12,8 @@ export default function MathJaxRenderer(props: MathJaxRendererProps) {
 	const { expression } = props;
 	const mathJaxProvider = useMathJaxProvider();
 	if (mathJaxProvider === undefined || mathJaxProvider.document === undefined)
-		return <></>;
+		return <p />;
 	const node = mathJaxProvider.document?.convert(expression) as LiteElement;
 	const children = render(node.children);
-	return <>{children}</>;
+	return <p>{children}</p>;
 }

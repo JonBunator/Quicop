@@ -9,7 +9,6 @@ export enum CodeType {
 	Code,
 }
 
-// eslint-disable-next-line @typescript-eslint/no-shadow
 function highlightCode(code: string, lang: string) {
 	if (lang && hljs.getLanguage(lang)) {
 		try {
@@ -32,7 +31,6 @@ function getCode(key: string, codeFiles: Map<string, [string, FileStatus]>) {
 	if (codeFiles.has(key)) {
 		// get file extension
 		const [codeContent, fileStatus]: [string, FileStatus] =
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			codeFiles.get(key)!;
 		if (fileStatus === FileStatus.BinaryFileError) {
 			error = `\`\`\`bash\nBinary file with path "${key}" is not displayable!\n\`\`\``;
@@ -43,7 +41,7 @@ function getCode(key: string, codeFiles: Map<string, [string, FileStatus]>) {
 		} else if (fileStatus === FileStatus.Success) {
 			const language = key.slice(
 				// eslint-disable-next-line no-bitwise
-				((key.lastIndexOf('.') - 1) >>> 0) + 2
+				((key.lastIndexOf('.') - 1) >>> 0) + 2,
 			);
 			const prefix = '<pre><code>';
 			const suffix = '</code></pre>';
@@ -55,7 +53,7 @@ function getCode(key: string, codeFiles: Map<string, [string, FileStatus]>) {
 
 export default async function parseMarkdown(
 	markdown: string,
-	codeFiles: Map<string, [string, FileStatus]>
+	codeFiles: Map<string, [string, FileStatus]>,
 ): Promise<[CodeType, string][]> {
 	marked.setOptions({
 		langPrefix: 'hljs language-',
@@ -68,7 +66,19 @@ export default async function parseMarkdown(
 	// adds a value to the compiledCode list
 	function addValue(type: CodeType, value: string) {
 		if (value === '') return;
-		compiledCode.push([type, value]);
+
+		let newValue = value;
+
+		if (type === CodeType.Markdown) {
+			// Add break lines for empty lines
+			newValue = value.replace(/\n+/g, (match) => {
+				return match.length === 1
+					? '\n'
+					: '<br></br>'.repeat(match.length - 1);
+			});
+			newValue = marked(newValue);
+		}
+		compiledCode.push([type, newValue]);
 	}
 
 	// adds mathjax to the compiledCode list
@@ -83,30 +93,17 @@ export default async function parseMarkdown(
 
 	// extract MathJax and markdown to compiledCode list
 	function addMarkdown(value: string) {
-		// Add break lines for empty lines
-		const cleanedValue = value.replace(/\n+/g, (match) => {
-			return match.length === 1
-				? '\n'
-				: '<br></br>'.repeat(match.length - 1);
-		});
-
-		const regex = /\$(.*)\$/g;
+		const regex = /\$(.*?)\$/g;
 		let match;
 		let start = 0;
 		// eslint-disable-next-line no-cond-assign
-		while ((match = regex.exec(cleanedValue)) != null) {
+		while ((match = regex.exec(value)) != null) {
 			const mathJax: string = match[1];
-			addValue(
-				CodeType.Markdown,
-				marked.parse(cleanedValue.substring(start, match.index))
-			);
+			addValue(CodeType.Markdown, value.substring(start, match.index));
 			addMathJax(mathJax);
 			start = regex.lastIndex;
 		}
-		addValue(
-			CodeType.Markdown,
-			marked.parse(cleanedValue.substring(start))
-		);
+		addValue(CodeType.Markdown, value.substring(start));
 	}
 
 	const regex = /!CodeFile\["(.*)"\]/g;

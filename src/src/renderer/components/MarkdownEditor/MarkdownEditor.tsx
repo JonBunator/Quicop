@@ -18,7 +18,7 @@ export default function MarkdownEditor() {
 		(value: string) => {
 			markdownParser?.setMarkdown(value);
 		},
-		[markdownParser]
+		[markdownParser],
 	);
 
 	// can be light or dark

@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 
 export interface CodeEditorProps {
 	code: string;
-	onChange: (value: string, ...args: unknown[]) => void;
+	onChange: (value: string) => void;
 	// eslint-disable-next-line react/require-default-props
 	className?: string;
 }
@@ -70,13 +70,13 @@ const MarkCodeFiles: MarkdownConfig = {
 			name: 'CodeFiles',
 			parse(cx, _next, pos) {
 				const match = /^!CodeFile\["(.*)"\]/.exec(
-					cx.text.slice(pos - cx.offset)
+					cx.text.slice(pos - cx.offset),
 				);
 				if (match) {
 					return cx.addElement(
 						cx.elt('CodeFilesExclamation', pos, pos + 1, [
 							cx.elt('CodeFilesKeyword', pos + 1, pos + 9),
-						])
+						]),
 					);
 				}
 				return -1;
