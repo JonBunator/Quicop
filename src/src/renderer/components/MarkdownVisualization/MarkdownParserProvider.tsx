@@ -3,6 +3,7 @@ import {
 	createContext,
 	useContext,
 	useEffect,
+	useMemo,
 	useState,
 } from 'react';
 import parseMarkdown, { CodeType } from './CodeFileParser';
@@ -10,7 +11,7 @@ import FileStatus from '../FileStatus';
 import { useSettings } from '../Settings/SettingsProvider';
 
 const MarkdownParserContext = createContext<MarkdownParserProps | undefined>(
-	undefined
+	undefined,
 );
 
 interface MarkdownParserProps {
@@ -27,7 +28,7 @@ export type Props = {
 export default function MarkdownParserProvider(props: Props) {
 	const [markdown, setMarkdown] = useState('');
 	const [markdownParsed, setMarkdownParsed] = useState<[CodeType, string][]>(
-		[]
+		[],
 	);
 	const [codeFiles, setCodeFiles] = useState<
 		Map<string, [string, FileStatus]>
@@ -55,7 +56,7 @@ export default function MarkdownParserProvider(props: Props) {
 			if (!codeFiles.has(codePath)) {
 				setCodeFiles(
 					(prev) =>
-						new Map(prev.set(codePath, ['', FileStatus.Loading]))
+						new Map(prev.set(codePath, ['', FileStatus.Loading])),
 				);
 			}
 		}
@@ -79,22 +80,25 @@ export default function MarkdownParserProvider(props: Props) {
 							prev.set(codePath, [
 								'',
 								FileStatus.PathNotFoundError,
-							])
-						)
+							]),
+						),
 				);
 			} else if (file[1]) {
 				setCodeFiles(
 					(prev) =>
 						new Map(
-							prev.set(codePath, ['', FileStatus.BinaryFileError])
-						)
+							prev.set(codePath, [
+								'',
+								FileStatus.BinaryFileError,
+							]),
+						),
 				);
 			} else {
 				setCodeFiles(
 					(prev) =>
 						new Map(
-							prev.set(codePath, [file[0], FileStatus.Success])
-						)
+							prev.set(codePath, [file[0], FileStatus.Success]),
+						),
 				);
 			}
 		}
@@ -177,10 +181,13 @@ export default function MarkdownParserProvider(props: Props) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [markdown]);
 
+	const value = useMemo(
+		() => ({ markdown, markdownParsed, setMarkdown }),
+		[markdown, markdownParsed],
+	);
+
 	return (
-		<MarkdownParserContext.Provider
-			value={{ markdown, markdownParsed, setMarkdown }}
-		>
+		<MarkdownParserContext.Provider value={value}>
 			{children}
 		</MarkdownParserContext.Provider>
 	);

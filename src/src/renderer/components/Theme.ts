@@ -87,8 +87,11 @@ export const editorThemeDark = createTheme({
 });
 
 export const GlobalStyle = createGlobalStyle`
+	html {
+		height: 100%;
+	}
+
 	body {
-		background-color: ${themeGet('colors.canvas.default')};
 		height: 100%;
 	}
 

@@ -8,7 +8,7 @@ import StringProperty from './SettingsProperties/StringProperty';
 
 const SettingsPagePanel = styled.div`
 	background-color: ${themeGet('colors.canvas.default')};
-	margin-bottom: 32px;
+	padding-bottom: 32px;
 `;
 
 export default function SettingsPage() {
