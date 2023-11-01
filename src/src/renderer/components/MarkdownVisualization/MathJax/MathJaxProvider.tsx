@@ -3,6 +3,7 @@ import {
 	createContext,
 	useContext,
 	useEffect,
+	useMemo,
 	useState,
 } from 'react';
 import { mathjax } from 'mathjax-full/js/mathjax';
@@ -18,13 +19,13 @@ import type { LiteDocument } from 'mathjax-full/js/adaptors/lite/Document';
 
 export type Document = MathDocument<LiteElement, LiteText, LiteDocument>;
 
-const MathJaxProviderContext = createContext<MathJaxProviderProps | undefined>(
-	undefined
-);
-
 interface MathJaxProviderProps {
 	document: Document | undefined;
 }
+
+const MathJaxProviderContext = createContext<MathJaxProviderProps | undefined>(
+	undefined,
+);
 
 export type Props = {
 	children: ReactNode;
@@ -46,8 +47,9 @@ export default function MarkdownParserProvider(props: Props) {
 		setDocument(initDocument());
 	}, []);
 
+	const value = useMemo(() => ({ document }), [document]);
 	return (
-		<MathJaxProviderContext.Provider value={{ document }}>
+		<MathJaxProviderContext.Provider value={value}>
 			{children}
 		</MathJaxProviderContext.Provider>
 	);

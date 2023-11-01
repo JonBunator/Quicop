@@ -10,7 +10,7 @@ export interface MarkdownVisualizationProps {
 }
 
 export default function MarkdownVisualization(
-	props: MarkdownVisualizationProps
+	props: MarkdownVisualizationProps,
 ) {
 	const { markdownParsed } = props;
 
@@ -22,18 +22,18 @@ export default function MarkdownVisualization(
 	return (
 		<div className={`q-markdown-visualization${isDarkTheme()}`}>
 			{markdownParsed.map(
-				(item: [CodeType, string]) =>
+				(item: [CodeType, string], index: number) =>
 					(item[0] === CodeType.MathJax && (
 						<MathJaxRenderer
-							key={hash(item[1])}
+							key={hash(item[1] + index)}
 							expression={item[1]}
 						/>
 					)) || (
 						<CodePortionVisualizer
-							key={hash(item[1])}
+							key={hash(item[1] + index)}
 							code={item[1]}
 						/>
-					)
+					),
 			)}
 		</div>
 	);

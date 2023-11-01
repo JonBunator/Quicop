@@ -7,6 +7,8 @@ module.exports = {
 		// Since React 17 and typescript 4.1 you can safely disable the rule
 		'react/react-in-jsx-scope': 'off',
 		'no-continue': 'off',
+		"react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
+		"import/extensions": [1, {"ts": "never", "tsx": "never"}],
 	},
 	parserOptions: {
 		ecmaVersion: 2020,

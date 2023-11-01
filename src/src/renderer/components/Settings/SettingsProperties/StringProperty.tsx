@@ -90,48 +90,37 @@ export default function StringProperty(props: StringPropertyProps) {
 
 	return (
 		<SettingsProperty header={header} description={description}>
-			<>
-				<FormControl>
-					<FormControl.Label visuallyHidden />
-					<TextInput
-						onChange={handleInputChange}
-						defaultValue={defaultValue}
-						sx={type === 'string' ? { width: '100%' } : {}}
-						placeholder={header}
-						aria-describedby="string-input"
-						aria-invalid={
-							validationResult === 'empty' ||
-							validationResult === 'wrongType' ||
-							validationResult === 'outOfRange'
-						}
-					/>
-					{validationResult === 'empty' && (
-						<FormControl.Validation
-							id="string-input"
-							variant="error"
-						>
-							Value can't be empty!
-						</FormControl.Validation>
-					)}
-					{validationResult === 'wrongType' && (
-						<FormControl.Validation
-							id="string-input"
-							variant="error"
-						>
-							Wrong type. Input should be of type {type}!
-						</FormControl.Validation>
-					)}
-					{validationResult === 'outOfRange' && (
-						<FormControl.Validation
-							id="string-input"
-							variant="error"
-						>
-							Value is out of range. Must be between {minValue}{' '}
-							and {maxValue}!
-						</FormControl.Validation>
-					)}
-				</FormControl>
-			</>
+			<FormControl>
+				<FormControl.Label visuallyHidden />
+				<TextInput
+					onChange={handleInputChange}
+					defaultValue={defaultValue}
+					sx={type === 'string' ? { width: '100%' } : {}}
+					placeholder={header}
+					aria-describedby="string-input"
+					aria-invalid={
+						validationResult === 'empty' ||
+						validationResult === 'wrongType' ||
+						validationResult === 'outOfRange'
+					}
+				/>
+				{validationResult === 'empty' && (
+					<FormControl.Validation id="string-input" variant="error">
+						Value can't be empty!
+					</FormControl.Validation>
+				)}
+				{validationResult === 'wrongType' && (
+					<FormControl.Validation id="string-input" variant="error">
+						Wrong type. Input should be of type {type}!
+					</FormControl.Validation>
+				)}
+				{validationResult === 'outOfRange' && (
+					<FormControl.Validation id="string-input" variant="error">
+						Value is out of range. Must be between {minValue} and{' '}
+						{maxValue}!
+					</FormControl.Validation>
+				)}
+			</FormControl>
 		</SettingsProperty>
 	);
 }
