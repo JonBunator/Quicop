@@ -19,17 +19,21 @@ New releases are automatically downloaded when you start the application.
 ## Features
 ### Code Files
 Embed code files via the `!CodeFile["C:/my-path/file.cs"]` command. Quickly import a bunch of files with `File -> Import Code file folder...`
+
 ![CodeFiles](assets/CodeFiles.png)
 
 ### Markdown
 The basic markdown syntax is supported (headers, tables, code blocks etc.)
 You could even use it as a basic markdown editor :)
-![Markdown](assets/Markdown.png)
+
+![Markdown](assets/MarkDown.png)
 
 ### MathJax
 Display formulas with [MathJax](https://www.mathjax.org/) support.
+
 ![MathJax](assets/MathJax.png)
 
 ### Settings
 Configure settings under `File -> Settings`. You can for example change from a dark to a light theme.
+
 ![LightDarkTheme](assets/LightDarkTheme.png)
