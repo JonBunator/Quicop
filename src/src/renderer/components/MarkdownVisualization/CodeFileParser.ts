@@ -103,11 +103,11 @@ export default async function parseMarkdown(
 
 	// parses breaklines in markdown
 	async function extractBreaklines(value: string) {
-		const regex = /(\n{2,})/g;
+		const regex = /\n{2,}/g;
 		let match;
 		let start = 0;
 		// eslint-disable-next-line no-cond-assign
-		while ((match = regex.exec(markdown)) != null) {
+		while ((match = regex.exec(value)) != null) {
 			const markdownParsed = await parseSaveMarkdown(
 				value.substring(start, match.index),
 			);
@@ -120,7 +120,7 @@ export default async function parseMarkdown(
 		await addMarkdown(markdownParsed);
 	}
 
-	// extract MathJax and markdown to compiledCode list
+	// extract MathJax and markdown
 	async function extractMarkdownMathJax(value: string) {
 		const regex = /\$(.*?)\$/g;
 		let match;
@@ -146,6 +146,5 @@ export default async function parseMarkdown(
 		start = regex.lastIndex;
 	}
 	await extractMarkdownMathJax(markdown.substring(start));
-
 	return compiledCode;
 }
