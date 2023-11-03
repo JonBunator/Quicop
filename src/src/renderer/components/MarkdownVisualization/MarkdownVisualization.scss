@@ -53,6 +53,16 @@
 		color: var(--markdown-color);
 	}
 
+	h1, h2, h3, h4, h5, h6 {
+		border-bottom: 1px solid var(--markdown-muted-color);
+		padding-bottom: .3em;
+	}
+	p {
+		margin: 0;
+		padding: 0;
+		line-height: 24px;
+	}
+
 	blockquote {
 		padding: 5px 20px;
 		margin: 0 0 20px;
@@ -60,7 +70,7 @@
 			color: var(--markdown-muted-text-color);
 		}
 		background-color: var(--markdown-muted-background-color);
-		border-left: 4px solid var(--markdown-muted-color);
+		border-left: 2px solid var(--markdown-muted-color);
 	}
 
 	hr {

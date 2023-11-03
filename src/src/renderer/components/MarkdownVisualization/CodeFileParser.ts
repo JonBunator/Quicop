@@ -1,6 +1,9 @@
-import { marked } from 'marked';
+/* eslint-disable no-await-in-loop */
+import { Marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 import './MarkdownVisualization.scss';
+import * as DOMPurify from 'dompurify';
 import FileStatus from '../FileStatus';
 
 export enum CodeType {
@@ -26,7 +29,26 @@ function highlightCode(code: string, lang: string) {
 	return '';
 }
 
-function getCode(key: string, codeFiles: Map<string, [string, FileStatus]>) {
+// marked highlighter options
+const marked = new Marked(
+	{
+		async: true,
+		breaks: true,
+	},
+	markedHighlight({
+		langPrefix: 'hljs language-',
+		highlight: highlightCode,
+	}),
+);
+
+async function parseSaveMarkdown(markdown: string): Promise<string> {
+	return DOMPurify.sanitize(await marked.parse(markdown));
+}
+
+async function getCode(
+	key: string,
+	codeFiles: Map<string, [string, FileStatus]>,
+): Promise<string> {
 	let error = `\`\`\`bash\nFile "${key}" is not cached. Press F5 to refresh!\n\`\`\``;
 	if (codeFiles.has(key)) {
 		// get file extension
@@ -48,62 +70,69 @@ function getCode(key: string, codeFiles: Map<string, [string, FileStatus]>) {
 			return prefix + highlightCode(codeContent, language) + suffix;
 		}
 	}
-	return marked.parse(error);
+	return parseSaveMarkdown(error);
 }
 
 export default async function parseMarkdown(
 	markdown: string,
 	codeFiles: Map<string, [string, FileStatus]>,
 ): Promise<[CodeType, string][]> {
-	marked.setOptions({
-		langPrefix: 'hljs language-',
-		highlight: highlightCode,
-		breaks: true,
-	});
-
 	const compiledCode: [CodeType, string][] = [];
 
 	// adds a value to the compiledCode list
-	function addValue(type: CodeType, value: string) {
+	async function addValue(type: CodeType, value: string) {
 		if (value === '') return;
+		compiledCode.push([type, value]);
+	}
 
-		let newValue = value;
-
-		if (type === CodeType.Markdown) {
-			// Add break lines for empty lines
-			newValue = value.replace(/\n+/g, (match) => {
-				return match.length === 1
-					? '\n'
-					: '<br></br>'.repeat(match.length - 1);
-			});
-			newValue = marked(newValue);
-		}
-		compiledCode.push([type, newValue]);
+	// adds markdown to the compiledCode list
+	async function addMarkdown(value: string) {
+		addValue(CodeType.Markdown, value);
 	}
 
 	// adds mathjax to the compiledCode list
-	function addMathJax(value: string) {
+	async function addMathJax(value: string) {
 		addValue(CodeType.MathJax, value);
 	}
 
 	// adds code to the compiledCode list
-	function addCode(value: string) {
-		addValue(CodeType.Code, value);
+	async function addCode(path: string) {
+		const code = await getCode(path, codeFiles);
+		addValue(CodeType.Code, code);
+	}
+
+	// parses breaklines in markdown
+	async function extractBreaklines(value: string) {
+		const regex = /(\n{2,})/g;
+		let match;
+		let start = 0;
+		// eslint-disable-next-line no-cond-assign
+		while ((match = regex.exec(markdown)) != null) {
+			const markdownParsed = await parseSaveMarkdown(
+				value.substring(start, match.index),
+			);
+			await addMarkdown(
+				`${markdownParsed}${`<br>`.repeat(match[0].length - 1)}`,
+			);
+			start = regex.lastIndex;
+		}
+		const markdownParsed = await parseSaveMarkdown(value.substring(start));
+		await addMarkdown(markdownParsed);
 	}
 
 	// extract MathJax and markdown to compiledCode list
-	function addMarkdown(value: string) {
+	async function extractMarkdownMathJax(value: string) {
 		const regex = /\$(.*?)\$/g;
 		let match;
 		let start = 0;
 		// eslint-disable-next-line no-cond-assign
 		while ((match = regex.exec(value)) != null) {
 			const mathJax: string = match[1];
-			addValue(CodeType.Markdown, value.substring(start, match.index));
-			addMathJax(mathJax);
+			await extractBreaklines(value.substring(start, match.index));
+			await addMathJax(mathJax);
 			start = regex.lastIndex;
 		}
-		addValue(CodeType.Markdown, value.substring(start));
+		await extractBreaklines(value.substring(start));
 	}
 
 	const regex = /!CodeFile\["(.*)"\]/g;
@@ -112,10 +141,11 @@ export default async function parseMarkdown(
 	// eslint-disable-next-line no-cond-assign
 	while ((match = regex.exec(markdown)) != null) {
 		const path: string = match[1];
-		addMarkdown(markdown.substring(start, match.index));
-		addCode(getCode(path, codeFiles));
+		await extractMarkdownMathJax(markdown.substring(start, match.index));
+		await addCode(path);
 		start = regex.lastIndex;
 	}
-	addMarkdown(markdown.substring(start));
+	await extractMarkdownMathJax(markdown.substring(start));
+
 	return compiledCode;
 }
